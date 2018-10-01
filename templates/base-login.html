@@ -1,0 +1,80 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/orangeHelvetica.css' %}">
+    <!--
+      Orange Icons
+      Copyright (C) 2016 - 2018 Orange SA All rights reserved
+      See NOTICE.txt for more informations.
+    -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/docs.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/orangeIcons.css' %}">
+    <!-- Boosted CSS -->
+    <link rel="stylesheet" href="{% static 'css/boosted.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+         <!--[if lt IE 9]>
+        <link rel="stylesheet" href="css/bootstrap-orangeIE82015.css" />
+        <link rel="stylesheet" href="css/boostedIE82015.css">
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <!--[if (gte IE 9) | (!IE)]><!--> 
+        <!-- <link rel="stylesheet" href="{% static 'css/bootstrap-orange2015.css' %}" /> -->
+        <!-- <link rel="stylesheet" href="{% static 'css/boosted2015.css' %}"> -->
+      <!--<![endif]-->
+
+    <title>CommGen</title>
+ 
+  </head>
+  <body>
+      <div class="contents">
+      <div class="col-md-3 part" style="background-color: black;">
+        <div class="row" style="margin-top: 2rem;margin-left: 2rem;align-items: flex-start;">
+          <!-- <div style="margin-top: 2rem;display: inline-block;"> -->
+          <img src="/media/orange-logo50x50.jpg">
+          <h1 style="color: #fff;margin-top: 1rem;margin-left: 1.5rem;font-size: 34px">CommGen</h1>
+            
+          <!-- </div> -->
+        </div>
+        <div class="row">
+{% block content %}
+{% endblock %}
+
+        </div>          
+
+        
+      </div>
+            <!-- <div class="col-md-9 part" style="background-image:url('/media/login_background1200x800.jpg');background-size: cover;"> -->
+            <div class="col-md-9 part" style="background-image:url('/media/Background_Login.jpg');background-size: cover;">
+            <!-- <div class="col-md-9 part"> -->
+              <!-- <img src='/media/login_background1200x800.jpg' class="img-responsive" /> -->
+        
+      </div>
+        </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Boosted JS. -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <!-- <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script> -->
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- jQuery validate -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script> -->
+    <script src="{% static 'js/boosted.js' %}"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+
+    
+
+
+
+  </body>
+</html>
+
+

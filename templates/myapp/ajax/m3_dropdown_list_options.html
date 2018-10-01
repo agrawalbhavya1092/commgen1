@@ -1,0 +1,6 @@
+{% for m3 in m3_department %}
+<div class="custom-select-option">
+<input onchange="toggleFillColor(this);" type="checkbox"
+  name="m3[]" value="{{m3.m3_department_id}}" id=""> {{m3.m3_department_name}}
+</div>
+{% endfor %}

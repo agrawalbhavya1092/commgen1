@@ -1,0 +1,214 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-10 14:26+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\schedule\apps.py:9
+msgid "Schedules"
+msgstr ""
+
+#: .\schedule\forms.py:11 .\schedule\models\events.py:55
+#: .\schedule\models\events.py:569
+msgid "start"
+msgstr ""
+
+#: .\schedule\forms.py:12 .\schedule\models\events.py:56
+#: .\schedule\models\events.py:570
+msgid "end"
+msgstr ""
+
+#: .\schedule\forms.py:13 .\schedule\forms.py:18
+msgid "The end time must be later than start time."
+msgstr ""
+
+#: .\schedule\forms.py:26
+msgid "End recurring period"
+msgstr ""
+
+#: .\schedule\forms.py:27 .\schedule\models\events.py:76
+msgid "This date is ignored for one time only events."
+msgstr ""
+
+#: .\schedule\models\calendars.py:142 .\schedule\models\rules.py:51
+msgid "name"
+msgstr ""
+
+#: .\schedule\models\calendars.py:143
+msgid "slug"
+msgstr ""
+
+#: .\schedule\models\calendars.py:147 .\schedule\models\calendars.py:225
+#: .\schedule\models\events.py:82
+msgid "calendar"
+msgstr ""
+
+#: .\schedule\models\calendars.py:148
+msgid "calendars"
+msgstr ""
+
+#: .\schedule\models\calendars.py:229 .\schedule\models\events.py:550
+msgid "distinction"
+msgstr ""
+
+#: .\schedule\models\calendars.py:230
+msgid "inheritable"
+msgstr ""
+
+#: .\schedule\models\calendars.py:235
+msgid "calendar relation"
+msgstr ""
+
+#: .\schedule\models\calendars.py:236
+msgid "calendar relations"
+msgstr ""
+
+#: .\schedule\models\events.py:56
+msgid "The end time must be later than the start time."
+msgstr ""
+
+#: .\schedule\models\events.py:57 .\schedule\models\events.py:567
+msgid "title"
+msgstr ""
+
+#: .\schedule\models\events.py:58 .\schedule\models\events.py:568
+#: .\schedule\models\rules.py:52
+msgid "description"
+msgstr ""
+
+#: .\schedule\models\events.py:64
+msgid "creator"
+msgstr ""
+
+#: .\schedule\models\events.py:66 .\schedule\models\events.py:574
+msgid "created on"
+msgstr ""
+
+#: .\schedule\models\events.py:67 .\schedule\models\events.py:575
+msgid "updated on"
+msgstr ""
+
+#: .\schedule\models\events.py:73 .\schedule\models\rules.py:65
+msgid "rule"
+msgstr ""
+
+#: .\schedule\models\events.py:74
+msgid "Select '----' for a one time only event."
+msgstr ""
+
+#: .\schedule\models\events.py:75
+msgid "end recurring period"
+msgstr ""
+
+#: .\schedule\models\events.py:83
+msgid "Color event"
+msgstr ""
+
+#: .\schedule\models\events.py:87 .\schedule\models\events.py:546
+#: .\schedule\models\events.py:566
+msgid "event"
+msgstr ""
+
+#: .\schedule\models\events.py:88
+msgid "events"
+msgstr ""
+
+#: .\schedule\models\events.py:95
+#, python-format
+msgid "%(title)s: %(start)s - %(end)s"
+msgstr ""
+
+#: .\schedule\models\events.py:555
+msgid "event relation"
+msgstr ""
+
+#: .\schedule\models\events.py:556
+msgid "event relations"
+msgstr ""
+
+#: .\schedule\models\events.py:571
+msgid "cancelled"
+msgstr ""
+
+#: .\schedule\models\events.py:572
+msgid "original start"
+msgstr ""
+
+#: .\schedule\models\events.py:573
+msgid "original end"
+msgstr ""
+
+#: .\schedule\models\events.py:578
+msgid "occurrence"
+msgstr ""
+
+#: .\schedule\models\events.py:579
+msgid "occurrences"
+msgstr ""
+
+#: .\schedule\models\events.py:665
+#, python-format
+msgid "%(start)s to %(end)s"
+msgstr ""
+
+#: .\schedule\models\rules.py:12
+msgid "Yearly"
+msgstr ""
+
+#: .\schedule\models\rules.py:13
+msgid "Monthly"
+msgstr ""
+
+#: .\schedule\models\rules.py:14
+msgid "Weekly"
+msgstr ""
+
+#: .\schedule\models\rules.py:15
+msgid "Daily"
+msgstr ""
+
+#: .\schedule\models\rules.py:16
+msgid "Hourly"
+msgstr ""
+
+#: .\schedule\models\rules.py:17
+msgid "Minutely"
+msgstr ""
+
+#: .\schedule\models\rules.py:18
+msgid "Secondly"
+msgstr ""
+
+#: .\schedule\models\rules.py:53
+msgid "frequency"
+msgstr ""
+
+#: .\schedule\models\rules.py:54
+msgid "params"
+msgstr ""
+
+#: .\schedule\models\rules.py:66
+msgid "rules"
+msgstr ""
+
+#: .\schedule\periods.py:355
+#, python-format
+msgid "Week: %(start)s-%(end)s"
+msgstr ""
+
+#: .\schedule\periods.py:396
+#, python-format
+msgid "Day: %(start)s-%(end)s"
+msgstr ""

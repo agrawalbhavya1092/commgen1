@@ -1,0 +1,65 @@
+    {% load i18n %}
+{% load scheduletags i18n %}
+
+<header role="banner">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' 'dashboard' %}"><img src="/media/orange-logo.jpg" alt="Back to homepage" title="Back to homepage" style="margin: 1rem;margin-left: -10px" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsing-navbar" aria-controls="collapsing-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse justify-content-between collapse" id="collapsing-navbar" style="margin-bottom: .7rem">
+                <ul class="navbar-nav">
+                    <li class="nav-item active"><a class="nav-link" href="#" aria-current="page">Campaign</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Templates</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Lists</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Reports</a></li>
+                </ul>
+          <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="bs-glyphicons" href="{% url 'logout' %}">
+              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </a>&nbsp; &nbsp;
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% if LANGUAGE_CODE == "fr" %}
+              <img src="/media/us_flag.jpg" id="us_flag">&nbsp; &nbsp;
+            {% else %}
+              <img src="/media/france_flag.jpg" id="fr_flag">&nbsp; &nbsp;
+            {% endif %}
+          <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="{{ redirect_to }}">
+                <input type="text" name="language" {% if LANGUAGE_CODE == 'en' %} value='fr' {% else %} value='en' {% endif %} id="language" style="display: none;">
+                <button type="submit" value="Go" id="language_submit" style="display: none;"></button>
+              </form>
+          </li>
+           <li class="nav-item">
+              <a href="#" class="nav-link" style="color: #fff;font-size: 30px;font-weight: 100">
+                <center><span class="icon-Notification_Bell" aria-hidden="true" style="position: absolute;"></span><span class="badge badge-primary" style="border-radius: 10px;margin-bottom: 15px;overflow: auto;font-size: 10px;position: relative;margin-left: 15px;padding: 1px 5px">10</span></center>
+              </a>
+          </li>
+          <li class="nav-item">
+              <a href="#" class="nav-link" style="color: #fff;font-size: 30px;font-weight: 100">
+                  <span class="icon-search"></span>
+              </a>
+          </li>
+         <li class="nav-item">
+              <a href="#" class="nav-link">
+                  <img src="/media/avatar.png" alt="Avatar" class="avatar">
+              </a>
+          </li>
+        </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script type="text/javascript">
+    $("#fr_flag").click(function () {
+      $("#language_submit").click();
+    });
+    $("#us_flag").click(function () {
+      $("#language_submit").click();
+    });
+    </script>

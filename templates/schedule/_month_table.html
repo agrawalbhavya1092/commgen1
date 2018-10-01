@@ -1,0 +1,20 @@
+{% load scheduletags %}
+<table class="table-bordered" style="margin: 10px 10px 10px 10px">
+{% if day_names %}
+<thead>
+  <!-- <th>&nbsp;</th> -->
+  {% for day_name in day_names %}
+    <th bgcolor="white" style="border-left: 10px solid #fff;">{{ day_name }}</th>
+  {% endfor %}
+</thead>
+{% endif %}
+<tbody>
+  {% for week in month.get_weeks %}
+      <tr>
+      {% for day in week.get_days %}
+    {% day_cell calendar day month size %}
+      {% endfor %}
+      </tr>
+  {% endfor %}
+</tbody>
+</table>

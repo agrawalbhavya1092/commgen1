@@ -1,0 +1,17 @@
+{% load scheduletags %}
+{% ifnotequal day.start.month month.start.month %}
+  <td class="muted"></td>
+{% else %}
+  {% if day.has_occurrences %}
+    <td class="btn btn-outline-primary" style="border: 2px solid #f16e00;background-color: #fff" data-toggle="tooltip" data-placement="top" title="{{day|get_event_on_tooltip}}">
+  {% else %}
+    <td>
+  {% endif %}
+  <a href="{% url "my_day_calendar" calendar.slug %}{% querystring_for_date day.start 3 %}">
+    <strong>{{day.start.day}}</strong>
+  </a>
+  {% ifnotequal size "small" %}
+    {% include "schedule/_day_cell_big.html" %}
+  {% endifnotequal %}
+</td>
+{% endifnotequal %}

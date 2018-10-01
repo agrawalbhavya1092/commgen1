@@ -1,0 +1,10 @@
+{% extends "base-login.html" %}
+
+{% load i18n %}
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+<p style="margin-top: 10%;">Login</p>
+{% include 'registration/login_form.html' %}
+
+{% endblock %}
