@@ -7,21 +7,21 @@
 <div class="container theme-showcase" role="main" style="font-family: arial;">
   <div class="row" style="margin-top: 1.5rem">
     <div class="col-md-9">
-      <h1 style="font-size: 40px">Welcome to CommGen</h1>
+      <h1 style="font-size: 40px">{% trans 'Welcome to CommGen' %}</h1>
     </div>
     <div class="col-md-3">
-      <a href="{% url 'newcampaign' %}" class="btn btn-warning">Create a Campaign</a>
+      <a href="{% url 'newcampaign' %}" class="btn btn-warning">{% trans 'Create a Campaign' %}</a>
     </div>
   </div>
   <div class="row" style="margin-top: 2rem">
     <div class="col-md-9">
-      <h2 style="font-size: 20px bold">My actions</h2>
+      <h2 style="font-size: 20px bold">{% trans 'My Actions' %}</h2>
       <table class="table">
   <thead>
     <tr>
-      <th scope="col">Campaigns</th>
-      <th scope="col">Status</th>
-      <th scope="col" style="text-align: right">Action</th>
+      <th scope="col">{% trans 'Campaigns' %}</th>
+      <th scope="col">{% trans 'Status' %}</th>
+      <th scope="col" style="text-align: right">{% trans 'Action' %}</th>
     </tr>
   </thead>
   <tbody>
@@ -29,19 +29,19 @@
     <tr>
       <td>{{campaign.name}}</td>
       <td>Pending Approval</td>
-      <td style="text-align: right"><i class="icon-trash"></i><i class="icon-Pencil"></i></td>
+      <td style="text-align: right"><i class="glyphicon glyphicon-triangle-right"></i><i class="icon-tick"></i></td>
     </tr>
     {% endfor %}
     <tr>
       <td>Campaign for New Year</td>
       <td>Draft</td>
-      <td style="text-align: right"><i class="icon-delete"></i><i class="icon-tick"></i></td>
+      <td style="text-align: right"><i class="icon-trash"></i><i class="icon-Pencil"></i></td>
     </tr>
   </tbody>
 </table>
     </div>
     <div class="col-md-3">
-      <h2 style="font-size: 20px bold;margin: 1px">My Calendar</h2>
+      <h2 style="font-size: 20px bold;margin: 10px">{% trans 'My Calendar' %}</h2>
                      {% prevnext "home" calendar period "F Y"%}
                   {% month_table calendar period "small" %}
     </div>

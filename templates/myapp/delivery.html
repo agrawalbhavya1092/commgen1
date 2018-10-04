@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="col-md-6">
-    <h1 style="font-size: 40px">Create your Campaign</h1>
+    <h1 style="font-size: 40px">{% trans 'Add an entry' %}</h1>
   </div>
 </div>
 <nav class="o-stepbar">
@@ -13,28 +13,28 @@
         <li class="stepbar-item done">
             <a class="stepbar-link" href="#" title="Step 1 : General Info">
                 <span class="step-number">1</span>
-                <span class="step-title">General Info</span>
+                <span class="step-title">{% trans 'General Info' %}</span>
             </a>
         </li>
-        <li class="stepbar-item current">
+        <li class="stepbar-item done">
             <a class="stepbar-link" href="#" title="Step 2 : Aperiam" aria-current="step">
                 <span class="step-number">2</span>
-                <span class="step-title">Template</span>
+                <span class="step-title">{% trans 'Template' %}</span>
             </a>
         </li>
-        <li class="stepbar-item next">
+        <li class="stepbar-item done">
             <a class="stepbar-link" href="#" title="Step 3 : Accusantinum">
                 <span class="step-number">3</span>
                 <span class="step-title">Customize</span>
             </a>
         </li>
-        <li class="stepbar-item next">
+        <li class="stepbar-item done">
             <a class="stepbar-link" href="#" title="Step 4 : Ipsam">
                 <span class="step-number">4</span>
                 <span class="step-title">Preview</span>
             </a>
         </li>
-        <li class="stepbar-item next">
+        <li class="stepbar-item current">
             <a class="stepbar-link" href="#" title="Step 5 : Aspernatur">
                 <span class="step-number">5</span>
                 <span class="step-title">Delivery</span>
@@ -51,8 +51,17 @@
 
 <div class="row">
 
-  <div class="col-md-6"><h2 style="margin-top: 1rem">{% trans 'My Templates' %}</h2></div>
+  <div class="col-md-9">
+      
+  </div>
+  <div class="col-md-3">
+          <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="inclusion_flag" name="inclusion_flag">
+        <label class="custom-control-label" for="inclusion_flag">{% trans 'Include Sub-Entities' %}</label>
+      </div> 
+  </div>
 </div>
+
 <div class="row">
   <a href="" id="blank_template">
   <div class="card" style="width: 15rem;height: 9rem">

@@ -16,13 +16,13 @@
                 <span class="step-title">General Info</span>
             </a>
         </li>
-        <li class="stepbar-item current">
-            <a class="stepbar-link" href="#" title="Step 2 : Aperiam" aria-current="step">
+        <li class="stepbar-item done">
+            <a class="stepbar-link" href="#" title="Step 2 : Template" aria-current="step">
                 <span class="step-number">2</span>
                 <span class="step-title">Template</span>
             </a>
         </li>
-        <li class="stepbar-item next">
+        <li class="stepbar-item current">
             <a class="stepbar-link" href="#" title="Step 3 : Accusantinum">
                 <span class="step-number">3</span>
                 <span class="step-title">Customize</span>
@@ -51,34 +51,40 @@
 
 <div class="row">
 
-  <div class="col-md-6"><h2 style="margin-top: 1rem">{% trans 'My Templates' %}</h2></div>
 </div>
 <div class="row">
-  <a href="" id="blank_template">
-  <div class="card" style="width: 15rem;height: 9rem">
-  <div class="card-body">
-    <h5 class="card-title" style="text-align: center;padding-top: 30px">BLANK</h5>
-  </div>
-</div>
-</a>
-</div>
-<div class="row" style="margin-top: 10%">
+            <form method="post" action="">
+              {% csrf_token %}
+              {{form.media}}
+              {{form.as_p}}
+
+
+<div class="row" style="margin-top: 1%">
           <a href="{% url 'home' 'dashboard' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
-        <a href="" id="template_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
-        <a href="" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
-        <a href="" id="template_next" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</a>  
-        <!-- <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>   -->
+        <a href="" id="editor_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
+        <a href="" id="editor_save_draft" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
+        <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>  
 </div>
+
+
+
+
+              <!-- <button type="submit">Submit</button>              -->
+            </form>
+</div>
+
 
 </div>
 <script type="text/javascript">
+        $(window).load(function() {
+        $('label[for="id_content"]').remove();
+    });
     url = window.location.href
     parameter = url.split("/")
     slug = parameter[parameter.length - 2]
-    updatecampaign = '/campaign/updatecampaign/' + slug
+    updatecampaign = '/campaign/template/' + slug
     editor_url = '/campaign/editor/' + slug
-    $('#template_previous').attr('href',updatecampaign)
+    $('#editor_previous').attr('href',updatecampaign)
     $('#blank_template').attr('href',editor_url)
-    $('#template_next').attr('href',editor_url)
 </script>
 {% endblock  %}

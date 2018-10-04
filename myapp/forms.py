@@ -2,10 +2,10 @@ from django import forms
 from .models import *
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = DepartmentSetup
-        fields=()
+class PostForm(forms.Form):
+    # class Meta:
+        # model = DepartmentSetup
+        # fields=()
     content = forms.CharField(widget=CKEditorUploadingWidget())
 
 class MailingListForm(forms.Form):

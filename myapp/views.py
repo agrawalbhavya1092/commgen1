@@ -1,9 +1,9 @@
 from django.views.generic.edit import CreateView
 from .models import *
-from django.shortcuts import render
-from django.utils.translation import gettext as _
+# from django.shortcuts import render
+# from django.utils.translation import gettext as _
 from django.views.generic import TemplateView
-from .mixins import GroupRequiredMixin
+from .mixins import GroupRequiredMixin,CampaignAuthorizeMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from schedule.views import *
@@ -12,75 +12,11 @@ from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from .constants import *
 from django.forms.utils import ErrorList
+from .utils import get_unique_slug
+# from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect,render
 
 
-def load_prevnext_calendar(request,*args,**kwargs):
-    calendar = kwargs.get('calendar_slug')
-    calendar = Calendar.objects.get(name = calendar)
-    period_class = kwargs['period']
-    try:
-        date = coerce_date_dict(request.GET)
-    except ValueError:
-        raise Http404
-    if date:
-        try:
-            date = datetime.datetime(**date)
-        except ValueError:
-            raise Http404
-    else:
-        date = timezone.now()
-    event_list = GET_EVENTS_FUNC(request, calendar)
-    my_event_list = GET_MY_EVENTS_FUNC(request, calendar)
-    local_timezone = timezone.get_current_timezone()
-    period = period_class(event_list, date, tzinfo=local_timezone)
-    my_period = period_class(my_event_list, date, tzinfo=local_timezone)
-
-    context.update({
-        'date': date,
-        'period': period,
-        'my_period': my_period,
-        'calendar': calendar,
-        'weekday_names': weekday_names,
-        'here': quote(request.get_full_path()),
-    })
-    return render(request,'calendar.html',context)
-
-class LoadCalendar(LoginRequiredMixin,GroupRequiredMixin,CalendarMixin, TemplateView):
-    template_name = 'calendar.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(LoadCalendar, self).get_context_data(**kwargs)
-        calendar = self.kwargs.get('calendar_slug')
-        calendar = Calendar.objects.get(name = calendar)
-        period_class = self.kwargs['period']
-        try:
-            date = coerce_date_dict(self.request.GET)
-        except ValueError:
-            raise Http404
-        if date:
-            try:
-                date = datetime.datetime(**date)
-            except ValueError:
-                raise Http404
-        else:
-            date = timezone.now()
-        event_list = GET_EVENTS_FUNC(self.request, calendar)
-        my_event_list = GET_MY_EVENTS_FUNC(self.request, calendar)
-        local_timezone = timezone.get_current_timezone()
-        period = period_class(event_list, date, tzinfo=local_timezone)
-        my_period = period_class(my_event_list, date, tzinfo=local_timezone)
-
-        context.update({
-            'date': date,
-            'period': period,
-            'my_period': my_period,
-            'calendar': calendar,
-            'weekday_names': weekday_names,
-            'here': quote(self.request.get_full_path()),
-        })
-        return context
-
-# class MyView(LoginRequiredMixin,GroupRequiredMixin,CalendarMixin, DetailView):
 class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
     template_name = 'index.html'
     def get_context_data(self, **kwargs):
@@ -120,10 +56,10 @@ class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
         return context
 
 class AudienceView(LoginRequiredMixin,TemplateView):
-    template_name = "myapp/audience.html"
+    template_name = "myapp/delivery.html"
 
     def get(self,request,*args,**kwargs):
-        campaign_name = kwargs["campaign"]
+        campaign_name = kwargs["slug"]
         form = MailingListForm()
         source = DepartmentSetup.objects.order_by().values('source').distinct()
         p1_department = DepartmentSetup.objects.order_by().values('source','m1_department_name','m1_department_id').distinct()
@@ -132,25 +68,26 @@ class AudienceView(LoginRequiredMixin,TemplateView):
         return render(request,self.template_name,{'p1_department': p1_department,'p2_department': p2_department,'campaign':campaign_name,'sources':source,'form':form,'generic_company':generic_company,'staff_status':STAFF_STATUS,'manager':MANAGER,'regular':REGULAR,'language':LANGUAGE})
 
     def post(self,request,*args,**kwargs):
-        campaign_name = kwargs["campaign"]
+        campaign_name = kwargs["slug"]
         form = MailingListForm()
-        print("post............",request.POST)
         source = DepartmentSetup.objects.order_by().values('source').distinct()
         generic_company = LocationSetup.objects.order_by().values('generic_company').distinct()
         no_of_email = 3
         email_list = "bhavya.agrawal@puresoftware.com;divyani.dubey@orannge.com;rahul.kaundal@orange.com"
         return render(request,self.template_name,{'campaign':campaign_name,'sources':source,'form':form,'generic_company':generic_company,'staff_status':STAFF_STATUS,'manager':MANAGER,'regular':REGULAR,'language':LANGUAGE,'no_of_email':no_of_email,"email_list":email_list})
 
-class MailingTemplateView(LoginRequiredMixin,TemplateView):
-    template_name = "myapp/template.html"
+class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+    template_name = "myapp/editor.html"
     def get(self,request,*args,**kwargs):
-        campaign_name = kwargs["campaign"]
+        campaign_name = kwargs["slug"]
         form = PostForm()
         source = DepartmentSetup.objects.order_by().values('source').distinct()
-        return render(request,'myapp/template.html',{'campaign':campaign_name,'source':source,'form':form})
+        return render(request,self.template_name,{'campaign':campaign_name,'source':source,'form':form})
 
     def post(self,request,*args,**kwargs):
-        campaign_name = kwargs["campaign"]
+        campaign_name = kwargs["slug"]
+        # form = PostForm()
+        # source = "Christmas"
         send_mail(
             'Subject here',
             'Here is the message.',
@@ -158,16 +95,26 @@ class MailingTemplateView(LoginRequiredMixin,TemplateView):
             fail_silently=False,
             html_message = request.POST.get('content')
             )
-        return render(request,'myapp/template.html',{'campaign':campaign_name,'sources':source,'form':form})
+        # return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
+        return redirect('audience',slug=campaign_name)
+
+class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+    template_name = "myapp/template.html"
+
 
 class NewCampaignCreate(LoginRequiredMixin,CreateView):
     model = Campaign
     fields = ['name','description']
     template_name = 'myapp/create_new_campaign.html'
+    success_url = '/campaign/template/'
     
     def form_valid(self, form):
+        campaign_slug = get_unique_slug(form.instance.name)
         form.instance.creator = self.request.user
+        form.instance.creation_date = datetime.datetime.now()
         campaign_name = form.instance.name
+        form.instance.slug = campaign_slug
+        self.success_url = self.success_url + campaign_slug
         obj = Campaign.objects.filter(name=campaign_name,creator=self.request.user)
         if len(obj)>0:
             form._errors[forms.forms.NON_FIELD_ERRORS] = ErrorList([
@@ -176,6 +123,17 @@ class NewCampaignCreate(LoginRequiredMixin,CreateView):
             return self.form_invalid(form)
         return super(NewCampaignCreate, self).form_valid(form)
 
+class CampaignUpdate(LoginRequiredMixin,CampaignAuthorizeMixin,UpdateView):
+    model = Campaign
+    fields = ['name','description']
+    template_name = 'myapp/create_new_campaign.html'
+    success_url = '/campaign/template/'
+    def form_valid(self, form):
+        campaign_slug = self.kwargs["slug"]
+        form.instance.creation_date = datetime.datetime.now()
+        form.instance.slug = campaign_slug
+        self.success_url = self.success_url + campaign_slug
+        return super(CampaignUpdate, self).form_valid(form)
 
 def load_p1(request):
     source = request.GET.get('data')

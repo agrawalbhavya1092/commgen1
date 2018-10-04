@@ -1,5 +1,6 @@
 from django.core.exceptions import PermissionDenied
 from users.models import Group
+from .models import Campaign
 
 
 class GroupRequiredMixin(object):
@@ -21,3 +22,14 @@ class GroupRequiredMixin(object):
             if len(set(user_groups).intersection({self.group_required})) <= 0:
                 raise PermissionDenied
         return super(GroupRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+class CampaignAuthorizeMixin(object):
+
+    def dispatch(self, request, *args, **kwargs):
+        campaign_slug = self.kwargs.get("slug","")
+        campaign = Campaign.objects.filter(slug=campaign_slug).first()
+        if campaign:
+            pass
+        else:
+            raise PermissionDenied
+        return super(CampaignAuthorizeMixin, self).dispatch(request, *args, **kwargs)
