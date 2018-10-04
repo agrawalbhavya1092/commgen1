@@ -80,22 +80,30 @@ class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,Templa
     template_name = "myapp/editor.html"
     def get(self,request,*args,**kwargs):
         campaign_name = kwargs["slug"]
-        form = PostForm()
+        form = EditorForm(instance=Campaign.objects.get(slug=campaign_name))
+
         source = DepartmentSetup.objects.order_by().values('source').distinct()
         return render(request,self.template_name,{'campaign':campaign_name,'source':source,'form':form})
 
     def post(self,request,*args,**kwargs):
         campaign_name = kwargs["slug"]
-        # form = PostForm()
-        # source = "Christmas"
-        send_mail(
-            'Subject here',
-            'Here is the message.',
-            'bhavya.92@hotmail.com',['bhavya.agrawal@puresoftware.com'],
-            fail_silently=False,
-            html_message = request.POST.get('content')
-            )
-        # return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
+        form = EditorForm(request.POST,instance=Campaign.objects.get(slug=campaign_name))
+        print("form..........",form)
+        if form.is_valid():
+            print("fsfsfsfsfs valid!!!!!!!!!!!!!!!")
+            # obj = Campaign.objects.
+            form.save()
+        else:
+            print("rorrs....",form.errors)
+            source = "Christmas"
+            return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
+        # send_mail(
+        #     'Subject here',
+        #     'Here is the message.',
+        #     'bhavya.92@hotmail.com',['bhavya.agrawal@puresoftware.com'],
+        #     fail_silently=False,
+        #     html_message = request.POST.get('content')
+        #     )
         return redirect('audience',slug=campaign_name)
 
 class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):

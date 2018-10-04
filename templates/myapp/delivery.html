@@ -64,11 +64,6 @@
 
 <div class="row">
   <a href="" id="blank_template">
-  <div class="card" style="width: 15rem;height: 9rem">
-  <div class="card-body">
-    <h5 class="card-title" style="text-align: center;padding-top: 30px">BLANK</h5>
-  </div>
-</div>
 </a>
 </div>
 <div class="row" style="margin-top: 10%">
@@ -84,9 +79,9 @@
     url = window.location.href
     parameter = url.split("/")
     slug = parameter[parameter.length - 2]
-    updatecampaign = '/campaign/updatecampaign/' + slug
+    editorcampaign = '/campaign/editor/' + slug
     editor_url = '/campaign/editor/' + slug
-    $('#template_previous').attr('href',updatecampaign)
+    $('#template_previous').attr('href',editorcampaign)
     $('#blank_template').attr('href',editor_url)
     $('#template_next').attr('href',editor_url)
 </script>

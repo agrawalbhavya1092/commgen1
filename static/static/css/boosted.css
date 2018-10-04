@@ -74,6 +74,7 @@ body {
   color: #000;
   text-align: left;
   background-color: #fff;
+  padding-bottom: 40px;
 }
 
 [tabindex="-1"]:focus {

@@ -2,11 +2,11 @@ from django import forms
 from .models import *
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
-class PostForm(forms.Form):
-    # class Meta:
-        # model = DepartmentSetup
-        # fields=()
-    content = forms.CharField(widget=CKEditorUploadingWidget())
+class EditorForm(forms.ModelForm):
+    class Meta:
+        model = Campaign
+        fields=('campaign_body',)
+    campaign_body = forms.CharField(widget=CKEditorUploadingWidget())
 
 class MailingListForm(forms.Form):
     entity = forms.ModelChoiceField(queryset=DepartmentSetup.objects.all().values('source').distinct())

@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-<div class="container theme-showcase" role="main" style="font-family: arial;">
+<div class="container theme-showcase" role="main" style="font-family: arial;" >
 
 <div class="row">
   <div class="col-md-6">
-    <h1 style="font-size: 40px">Create your Campaign</h1>
+    <h1 style="font-size: 40px">{% trans 'Create your Campaign' %}</h1>
   </div>
 </div>
 <nav class="o-stepbar">
@@ -13,37 +13,37 @@
         <li class="stepbar-item done">
             <a class="stepbar-link" href="#" title="Step 1 : General Info">
                 <span class="step-number">1</span>
-                <span class="step-title">General Info</span>
+                <span class="step-title">{% trans 'General Info' %}</span>
             </a>
         </li>
         <li class="stepbar-item done">
             <a class="stepbar-link" href="#" title="Step 2 : Template" aria-current="step">
                 <span class="step-number">2</span>
-                <span class="step-title">Template</span>
+                <span class="step-title">{% trans 'Template' %}</span>
             </a>
         </li>
         <li class="stepbar-item current">
             <a class="stepbar-link" href="#" title="Step 3 : Accusantinum">
                 <span class="step-number">3</span>
-                <span class="step-title">Customize</span>
+                <span class="step-title">{% trans 'Customize' %}</span>
             </a>
         </li>
         <li class="stepbar-item next">
             <a class="stepbar-link" href="#" title="Step 4 : Ipsam">
                 <span class="step-number">4</span>
-                <span class="step-title">Preview</span>
+                <span class="step-title">{% trans 'Preview'}</span>
             </a>
         </li>
         <li class="stepbar-item next">
             <a class="stepbar-link" href="#" title="Step 5 : Aspernatur">
                 <span class="step-number">5</span>
-                <span class="step-title">Delivery</span>
+                <span class="step-title">{% trans 'Delivery' %}</span>
             </a>
         </li>
         <li class="stepbar-item next">
             <a class="stepbar-link" href="#" title="Step 6 : Aspernatur">
                 <span class="step-number">6</span>
-                <span class="step-title">Overview</span>
+                <span class="step-title">{% trans 'Overview' %}</span>
             </a>
         </li>
     </ol>
@@ -52,33 +52,36 @@
 <div class="row">
 
 </div>
-<div class="row">
-            <form method="post" action="">
+<div class="row" style="margin-top: 1%">
+            <form method="post" action="" id="form1">
               {% csrf_token %}
               {{form.media}}
-              {{form.as_p}}
+              {{form.errors}}
+              {% if form.errors %}
+              <div class="alert alert-primary alert-dismissible fade show" role="alert" style="padding: 0">
+                  <strong>{{form.errors.campaign_body.as_text}}</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="padding: 0">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                {% endif %}
+              {{form.campaign_body}}
 
 
-<div class="row" style="margin-top: 1%">
-          <a href="{% url 'home' 'dashboard' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
+
+    <div class="row" style="margin-top: 1%">
+        <a href="{% url 'home' 'dashboard' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
         <a href="" id="editor_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
         <a href="" id="editor_save_draft" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
         <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>  
-</div>
-
-
-
-
-              <!-- <button type="submit">Submit</button>              -->
-            </form>
+    </div>
+    </form>
 </div>
 
 
 </div>
 <script type="text/javascript">
-        $(window).load(function() {
-        $('label[for="id_content"]').remove();
-    });
+    $('label[for="id_campaign_body"]').remove();
     url = window.location.href
     parameter = url.split("/")
     slug = parameter[parameter.length - 2]
@@ -86,5 +89,26 @@
     editor_url = '/campaign/editor/' + slug
     $('#editor_previous').attr('href',updatecampaign)
     $('#blank_template').attr('href',editor_url)
+
+    $(document).ready(function(){
+    $('#form1').submit(ajax);
+})
+function ajax(){
+    var editor = CKEDITOR.instances.id_campaign_body.document.getBody().getHtml();
+    var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
+    data = "csrfmiddlewaretoken="+csrf_token+"&"+"campaign_body="+editor
+        $.ajax({
+            url : url,
+            type : 'POST',
+            data : data,
+            success: function(data){
+            }
+        });
+        return false;
+}
+
+window.onload=function(){
+    setInterval(ajax, 600000);
+}
 </script>
 {% endblock  %}

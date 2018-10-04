@@ -22,6 +22,9 @@ class Campaign(models.Model):
 	campaign_body = models.TextField(null = True,db_column = 'CG_CAMPAIGN_BODY')
 	recurrence = models.CharField(null = True,max_length=120,db_column = 'CG_CAMPAIGN_REC_ID')
 
+	def __str__(self):
+		return self.name
+
 
 	class Meta:
 		db_table = 'CG_Campaign_tbl'
