@@ -31,7 +31,7 @@
         <li class="stepbar-item next">
             <a class="stepbar-link" href="#" title="Step 4 : Ipsam">
                 <span class="step-number">4</span>
-                <span class="step-title">{% trans 'Preview'}</span>
+                <span class="step-title">{% trans 'Preview' %}</span>
             </a>
         </li>
         <li class="stepbar-item next">
@@ -56,7 +56,6 @@
             <form method="post" action="" id="form1">
               {% csrf_token %}
               {{form.media}}
-              {{form.errors}}
               {% if form.errors %}
               <div class="alert alert-primary alert-dismissible fade show" role="alert" style="padding: 0">
                   <strong>{{form.errors.campaign_body.as_text}}</strong>
@@ -72,7 +71,7 @@
     <div class="row" style="margin-top: 1%">
         <a href="{% url 'home' 'dashboard' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
         <a href="" id="editor_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
-        <a href="" id="editor_save_draft" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
+        <button type="submit" id="editor_save_draft" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</button>
         <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>  
     </div>
     </form>
@@ -90,15 +89,31 @@
     $('#editor_previous').attr('href',updatecampaign)
     $('#blank_template').attr('href',editor_url)
 
-    $(document).ready(function(){
-    $('#form1').submit(ajax);
-})
+    $("#editor_save_draft").click(function(e){
+        e.preventDefault();
+
+        var editor = CKEDITOR.instances.id_campaign_body.document.getBody().getHtml();
+        var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
+        data = "csrfmiddlewaretoken="+csrf_token+"&"+"campaign_body="+editor
+        ajax_url = '/campaign/editordraft/' + slug+'/'
+            $.ajax({
+                url : ajax_url,
+                type : 'POST',
+                data : data,
+                success: function(data){
+                    window.location.replace('/dashboard')
+                }
+            });
+});
+
 function ajax(){
     var editor = CKEDITOR.instances.id_campaign_body.document.getBody().getHtml();
     var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
+    ajax_url = '/campaign/editordraft/' + slug+'/'
     data = "csrfmiddlewaretoken="+csrf_token+"&"+"campaign_body="+editor
+    console.log(data)
         $.ajax({
-            url : url,
+            url : ajax_url,
             type : 'POST',
             data : data,
             success: function(data){
@@ -108,7 +123,7 @@ function ajax(){
 }
 
 window.onload=function(){
-    setInterval(ajax, 600000);
+    setInterval(ajax, 60000);
 }
 </script>
 {% endblock  %}

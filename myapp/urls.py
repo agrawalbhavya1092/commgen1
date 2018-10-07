@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^audience/(?P<slug>[-\w]+)/$', AudienceView.as_view(), name='audience'),
     url(r'^updatecampaign/(?P<slug>[-\w]+)/$', CampaignUpdate.as_view(), name='updatecampaign'),
     url(r'^editor/(?P<slug>[-\w]+)/$', MailingTemplateEditorView.as_view(), name='editor'),
+    url(r'^editordraft/(?P<slug>[-\w]+)/$', SaveDraftEditorView.as_view(), name='editor_draft'),
     url(r'^template/(?P<slug>[-\w]+)/$', SelectTemplateView.as_view(), name='template'),
 ]
 # urlpatterns += i18n_patterns(path('',include('myapp.urls')))

@@ -10,7 +10,7 @@
       <h1 style="font-size: 40px">{% trans 'Welcome to CommGen' %}</h1>
     </div>
     <div class="col-md-3">
-      <a href="{% url 'newcampaign' %}" class="btn btn-warning">{% trans 'Create a Campaign' %}</a>
+      <a href="{% url 'newcampaign' %}" class="btn btn-warning" style="margin-left: 7%" >{% trans 'Create a Campaign' %}</a>
     </div>
   </div>
   <div class="row" style="margin-top: 2rem">
@@ -28,20 +28,20 @@
     {% for campaign in campaigns %}
     <tr>
       <td>{{campaign.name}}</td>
-      <td>Pending Approval</td>
-      <td style="text-align: right"><i class="icon-delete"></i><i class="icon-tick"></i></td>
+      <td>Draft</td>
+      <td style="text-align: right"><i class="icon-trash"></i><a href="{% url 'updatecampaign' campaign.slug %}"><i class="icon-Pencil"></a></td>
     </tr>
     {% endfor %}
     <tr>
       <td>Campaign for New Year</td>
-      <td>Draft</td>
-      <td style="text-align: right"><i class="icon-trash"></i><i class="icon-Pencil"></i></td>
+      <td>Pending Approval</td>
+      <td style="text-align: right"><i class="icon-delete"></i><i class="icon-tick"></i></i></td>
     </tr>
   </tbody>
 </table>
     </div>
     <div class="col-md-3">
-      <h2 style="font-size: 20px bold;margin: 10px">{% trans 'My Calendar' %}</h2>
+      <h2 style="font-size: 20px bold;margin: 10px;margin-left: 7%">{% trans 'My Calendar' %}</h2>
                      {% prevnext "home" calendar period "F Y"%}
                   {% month_table calendar period "small" %}
     </div>

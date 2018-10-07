@@ -73,7 +73,7 @@ class AudienceView(LoginRequiredMixin,TemplateView):
         source = DepartmentSetup.objects.order_by().values('source').distinct()
         generic_company = LocationSetup.objects.order_by().values('generic_company').distinct()
         no_of_email = 3
-        email_list = "bhavya.agrawal@puresoftware.com;divyani.dubey@orannge.com;rahul.kaundal@orange.com"
+        email_list = "bhavya.agrawal@puresoftware.com;divyani.dubey@orange.com;rahul.kaundal@orange.com"
         return render(request,self.template_name,{'campaign':campaign_name,'sources':source,'form':form,'generic_company':generic_company,'staff_status':STAFF_STATUS,'manager':MANAGER,'regular':REGULAR,'language':LANGUAGE,'no_of_email':no_of_email,"email_list":email_list})
 
 class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
@@ -87,24 +87,33 @@ class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,Templa
 
     def post(self,request,*args,**kwargs):
         campaign_name = kwargs["slug"]
+        print("sdfshfksjfsjfslfslfslfsfs")
         form = EditorForm(request.POST,instance=Campaign.objects.get(slug=campaign_name))
-        print("form..........",form)
         if form.is_valid():
-            print("fsfsfsfsfs valid!!!!!!!!!!!!!!!")
-            # obj = Campaign.objects.
             form.save()
         else:
-            print("rorrs....",form.errors)
             source = "Christmas"
             return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
-        # send_mail(
-        #     'Subject here',
-        #     'Here is the message.',
-        #     'bhavya.92@hotmail.com',['bhavya.agrawal@puresoftware.com'],
-        #     fail_silently=False,
-        #     html_message = request.POST.get('content')
-        #     )
+        send_mail(
+            'Greetings from Commgen',
+            '',
+            'Commgen',[request.user.email],
+            fail_silently=False,
+            html_message = request.POST.get('campaign_body')
+            )
         return redirect('audience',slug=campaign_name)
+
+class SaveDraftEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+    template_name = "myapp/editor.html"
+    def post(self,request,*args,**kwargs):
+        campaign_name = kwargs["slug"]
+        form = EditorForm(request.POST,instance=Campaign.objects.get(slug=campaign_name))
+        if form.is_valid():
+            form.save()
+        else:
+            source = "Christmas"
+            return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
+        return redirect('home',calendar_slug='dashboard')
 
 class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/template.html"

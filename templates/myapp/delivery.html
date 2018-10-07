@@ -51,7 +51,13 @@
 
 <div class="row">
 
-  <div class="col-md-9">
+<div class="card" style="border: 2px solid #000;padding: 3rem;margin-top: 6rem;margin-left: 15rem">
+  <div class="card-body">
+    The email has been sent to {{request.user.email}}
+  </div>
+</div>
+
+<!--   <div class="col-md-9">
       
   </div>
   <div class="col-md-3">
@@ -59,18 +65,18 @@
         <input type="checkbox" class="custom-control-input" id="inclusion_flag" name="inclusion_flag">
         <label class="custom-control-label" for="inclusion_flag">{% trans 'Include Sub-Entities' %}</label>
       </div> 
-  </div>
+  </div> -->
 </div>
 
 <div class="row">
   <a href="" id="blank_template">
 </a>
 </div>
-<div class="row" style="margin-top: 10%">
-          <a href="{% url 'home' 'dashboard' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
-        <a href="" id="template_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
-        <a href="" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
-        <a href="" id="template_next" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</a>  
+<div class="row" style="margin-top: 9%">
+          <!-- <a href="{% url 'home' 'dashboard' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a> -->
+        <!-- <a href="" id="template_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a> -->
+        <!-- <a href="{% url 'home' 'dashboard' %}" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a> -->
+        <a href="{% url 'home' 'dashboard' %}" id="template_next" class="btn btn-primary" style="margin-left: 85%;">{% trans 'GO TO HOME' %}</a>  
         <!-- <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>   -->
 </div>
 
@@ -82,7 +88,6 @@
     editorcampaign = '/campaign/editor/' + slug
     editor_url = '/campaign/editor/' + slug
     $('#template_previous').attr('href',editorcampaign)
-    $('#blank_template').attr('href',editor_url)
-    $('#template_next').attr('href',editor_url)
+    // $('#template_next').attr('href',editor_url)
 </script>
 {% endblock  %}
