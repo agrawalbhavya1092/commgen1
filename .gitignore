@@ -17,6 +17,7 @@ htmlcov/
 .coverage
 .coverage.*
 coverage.xml
+config.py
 
 .ropeproject/*
 pep8.txt

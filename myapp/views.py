@@ -155,7 +155,7 @@ class CampaignUpdate(LoginRequiredMixin,CampaignAuthorizeMixin,UpdateView):
     success_url = '/campaign/template/'
     form_class = CampaignForm
     def form_valid(self, form):
-        print("form.......",form)
+        print("form.......",dir(form))
         campaign_name = form.instance.name
         campaign_slug = self.kwargs["slug"]
         form.instance.creation_date = datetime.datetime.now()

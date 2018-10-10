@@ -25,19 +25,15 @@ SECRET_KEY = 'gy)8sr$20%yzfqo**id!p0)&qe=6+x)&w3+07jfre&8-0tv1^3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','10.237.92.204']
 # SMTP settings
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
 EMAIL_HOST = CONFIG_EMAIL_HOST
 EMAIL_USE_TLS = CONFIG_EMAIL_USE_TLS 
 EMAIL_PORT = CONFIG_EMAIL_PORT
 EMAIL_HOST_USER = CONFIG_EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = CONFIG_EMAIL_HOST_PASSWORD 
-# EMAIL_HOST = 'smtp.live.com'
-# EMAIL_HOST_USER = 'bhavya.92@hotmail.com'
-# EMAIL_HOST_PASSWORD = '!123bhavya'
-# EMAIL_PORT = '25'
+EMAIL_HOST_PASSWORD = CONFIG_EMAIL_HOST_PASSWORD
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -52,11 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'language_flags'
-    # 'debug_toolbar',
     'schedule',
     'myapp',
-    # 'templatetags',
     'users',
     'mailing_list',
     'mailing_templates',
@@ -105,9 +98,9 @@ WSGI_APPLICATION = 'commgen.wsgi.application'
 DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql', 
-    #     'NAME': 'dummy',
+    #     'NAME': 'CommGen_1',
     #     'USER': 'root',
-    #     'PASSWORD': '!1bhavya',
+    #     'PASSWORD': '!Passw0rd',
     #     'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
     #     'PORT': '3306',
     # },
