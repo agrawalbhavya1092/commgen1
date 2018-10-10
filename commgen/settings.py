@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from .config import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,19 +26,8 @@ SECRET_KEY = 'gy)8sr$20%yzfqo**id!p0)&qe=6+x)&w3+07jfre&8-0tv1^3'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-# SMTP settings
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = CONFIG_EMAIL_HOST
-EMAIL_USE_TLS = CONFIG_EMAIL_USE_TLS 
-EMAIL_PORT = CONFIG_EMAIL_PORT
-EMAIL_HOST_USER = CONFIG_EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = CONFIG_EMAIL_HOST_PASSWORD 
-# EMAIL_HOST = 'smtp.live.com'
-# EMAIL_HOST_USER = 'bhavya.92@hotmail.com'
-# EMAIL_HOST_PASSWORD = '!123bhavya'
-# EMAIL_PORT = '25'
 
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = '/main_page/calendar1'
 
 # Application definition
 
@@ -59,9 +47,7 @@ INSTALLED_APPS = [
     # 'templatetags',
     'users',
     'mailing_list',
-    'mailing_templates',
-    'ckeditor',
-    'ckeditor_uploader',
+    'mailing_templates'
 ]
 
 MIDDLEWARE = [
@@ -135,91 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-PASSWORD_RESET_TIMEOUT_DAYS=1
-
-####################################
-    ##  CKEDITOR CONFIGURATION ##
-####################################
-
-CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
-
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_RESTRICT_BY_USER = True
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#         'toolbar': None,
-#     },
-# }
-
-CKEDITOR_CONFIGS = {
-    'default': {
-    'height': 200,
-    'width': '70%',
-        # 'skin': 'full',
-        # 'skin': 'office2013',
-        # 'toolbar_Basic': [
-            # ['Source', '-', 'Bold', 'Italic']
-        # ],
-        'toolbar_YourCustomToolbarConfig': [
-            {'name': 'document', 'items': ['Source', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-            # {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
-            {'name': 'forms',
-             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-                       'HiddenField']},
-            # '/',
-            {'name': 'basicstyles',
-             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
-            {'name': 'paragraph',
-             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
-                       'Language']},
-            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-            {'name': 'insert',
-             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
-            # '/',
-            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
-            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
-            # {'name': 'about', 'items': ['About']},
-            # '/', 
-            # {'name': 'yourcustomtools', 'items': [
-                # 'Preview',
-                # 'Maximize',
-
-            # ]},
-        ],
-        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
-        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-        # 'height': 291,
-        # 'width': '100%',
-        # 'filebrowserWindowHeight': 725,
-        # 'filebrowserWindowWidth': 940,
-        # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
-        'tabSpaces': 4,
-        'extraPlugins': ','.join([
-            'uploadimage', # the upload image feature
-            # your extra plugins here
-            'div',
-            'autolink',
-            'autoembed',
-            'embedsemantic',
-            'autogrow',
-            # 'devtools',
-            'widget',
-            'lineutils',
-            'clipboard',
-            'dialog',
-            'dialogui',
-            'elementspath'
-        ]),
-    }
-}
-
-###################################
 
 
 # Internationalization
@@ -252,9 +153,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 if DEBUG:
     MEDIA_URL = '/media/'
     STATIC_ROOT = os.path.join(BASE_DIR,'static','static-only')
-    MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
+    MEDIA_ROOT = os.path.join(BASE_DIR,'media')
     STATICFILES_DIRS = (os.path.join(BASE_DIR,'static','static'),)
-    CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',

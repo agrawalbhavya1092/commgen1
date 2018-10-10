@@ -1,0 +1,486 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-schedulerN\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-11 11:10+0530\n"
+"PO-Revision-Date: 2008-12-05 23:59-0400\n"
+"Last-Translator: Anthony Monthe (ZuluPro ) <anthony.monthe@gmail.com>\n"
+"Language-Team: Yann Malet <yann.malet@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+
+#: .\schedule\apps.py:9
+#, fuzzy
+#| msgid "Schedule"
+msgid "Schedules"
+msgstr "Planifier"
+
+#: .\schedule\forms.py:11 .\schedule\models\events.py:55
+#: .\schedule\models\events.py:569
+msgid "start"
+msgstr "début"
+
+#: .\schedule\forms.py:12 .\schedule\models\events.py:56
+#: .\schedule\models\events.py:570
+msgid "end"
+msgstr "fin"
+
+#: .\schedule\forms.py:13 .\schedule\forms.py:18
+msgid "The end time must be later than start time."
+msgstr "L'heure de fin doit être après celle de début"
+
+#: .\schedule\forms.py:26
+#, fuzzy
+#| msgid "end recurring period"
+msgid "End recurring period"
+msgstr "fin de la période de récurrence"
+
+#: .\schedule\forms.py:27 .\schedule\models\events.py:76
+msgid "This date is ignored for one time only events."
+msgstr "Cette date est ignorée pour un événement ponctuel"
+
+#: .\schedule\models\calendars.py:142 .\schedule\models\rules.py:51
+msgid "name"
+msgstr "Nom"
+
+#: .\schedule\models\calendars.py:143
+msgid "slug"
+msgstr "nom court"
+
+#: .\schedule\models\calendars.py:147 .\schedule\models\calendars.py:225
+#: .\schedule\models\events.py:82
+msgid "calendar"
+msgstr "calendrier"
+
+#: .\schedule\models\calendars.py:148
+#, fuzzy
+#| msgid "calendar"
+msgid "calendars"
+msgstr "calendrier"
+
+#: .\schedule\models\calendars.py:229 .\schedule\models\events.py:550
+msgid "distinction"
+msgstr "distinction"
+
+#: .\schedule\models\calendars.py:230
+msgid "inheritable"
+msgstr "héritable"
+
+#: .\schedule\models\calendars.py:235
+msgid "calendar relation"
+msgstr "relation de calendrier"
+
+#: .\schedule\models\calendars.py:236
+msgid "calendar relations"
+msgstr "relations de calendrier"
+
+#: .\schedule\models\events.py:56
+msgid "The end time must be later than the start time."
+msgstr "L'heure de fin doit être avant celle de début"
+
+#: .\schedule\models\events.py:57 .\schedule\models\events.py:567
+msgid "title"
+msgstr "titre"
+
+#: .\schedule\models\events.py:58 .\schedule\models\events.py:568
+#: .\schedule\models\rules.py:52
+msgid "description"
+msgstr "description"
+
+#: .\schedule\models\events.py:64
+msgid "creator"
+msgstr "créateur"
+
+#: .\schedule\models\events.py:66 .\schedule\models\events.py:574
+msgid "created on"
+msgstr "crée le"
+
+#: .\schedule\models\events.py:67 .\schedule\models\events.py:575
+msgid "updated on"
+msgstr "mis à jour le"
+
+#: .\schedule\models\events.py:73 .\schedule\models\rules.py:65
+msgid "rule"
+msgstr "règle"
+
+#: .\schedule\models\events.py:74
+msgid "Select '----' for a one time only event."
+msgstr "Selectionnez '----' pour un événement ponctuel"
+
+#: .\schedule\models\events.py:75
+msgid "end recurring period"
+msgstr "fin de la période de récurrence"
+
+#: .\schedule\models\events.py:83
+#, fuzzy
+#| msgid "event"
+msgid "Color event"
+msgstr "Couleur d'événement"
+
+#: .\schedule\models\events.py:87 .\schedule\models\events.py:546
+#: .\schedule\models\events.py:566
+msgid "event"
+msgstr "événement"
+
+#: .\schedule\models\events.py:88
+msgid "events"
+msgstr "événements"
+
+#: .\schedule\models\events.py:95
+#, fuzzy, python-format
+#| msgid "Week: %(start)s-%(end)s"
+msgid "%(title)s: %(start)s - %(end)s"
+msgstr "Semaine : %(start)s-%(end)s"
+
+#: .\schedule\models\events.py:555
+msgid "event relation"
+msgstr "relation d'événement"
+
+#: .\schedule\models\events.py:556
+msgid "event relations"
+msgstr "relations d'événement"
+
+#: .\schedule\models\events.py:571
+msgid "cancelled"
+msgstr "annulé"
+
+#: .\schedule\models\events.py:572
+msgid "original start"
+msgstr "début original"
+
+#: .\schedule\models\events.py:573
+msgid "original end"
+msgstr "fin originale"
+
+#: .\schedule\models\events.py:578
+msgid "occurrence"
+msgstr "occurrence"
+
+#: .\schedule\models\events.py:579
+msgid "occurrences"
+msgstr "occurrences"
+
+#: .\schedule\models\events.py:665
+#, python-format
+msgid "%(start)s to %(end)s"
+msgstr "%(start)s à %(end)s"
+
+#: .\schedule\models\rules.py:12
+msgid "Yearly"
+msgstr "Annuel"
+
+#: .\schedule\models\rules.py:13
+msgid "Monthly"
+msgstr "Mensuel"
+
+#: .\schedule\models\rules.py:14
+msgid "Weekly"
+msgstr "Hebdomadaire"
+
+#: .\schedule\models\rules.py:15
+msgid "Daily"
+msgstr "Quotidien"
+
+#: .\schedule\models\rules.py:16
+msgid "Hourly"
+msgstr "Toutes les heures"
+
+#: .\schedule\models\rules.py:17
+msgid "Minutely"
+msgstr "Toutes les minutes"
+
+#: .\schedule\models\rules.py:18
+msgid "Secondly"
+msgstr "Toutes les secondes"
+
+#: .\schedule\models\rules.py:53
+msgid "frequency"
+msgstr "fréquence"
+
+#: .\schedule\models\rules.py:54
+msgid "params"
+msgstr "params"
+
+#: .\schedule\models\rules.py:66
+msgid "rules"
+msgstr "régles"
+
+#: .\schedule\periods.py:355
+#, python-format
+msgid "Week: %(start)s-%(end)s"
+msgstr "Semaine : %(start)s-%(end)s"
+
+#: .\schedule\periods.py:396
+#, python-format
+msgid "Day: %(start)s-%(end)s"
+msgstr "Jour: %(start)s-%(end)s"
+
+#~ msgid "This is a demo of a django-schedule calendar"
+#~ msgstr "Ceci est un démo de calendrier de django-schedule"
+
+#~ msgid "clear"
+#~ msgstr "clarifier"
+
+#~ msgid "Add New Session"
+#~ msgstr "Ajouter une nouvelle session"
+
+#, fuzzy
+#~| msgid "event"
+#~ msgid "Event"
+#~ msgstr "Événement"
+
+#~ msgid ""
+#~ "Would you like to <span id=\"editordelete\"></span> all occurrences in "
+#~ "this event or just this occurrence?"
+#~ msgstr ""
+#~ "Voulez-vous <span id=\"editordelete\"></span> toutes les occurrences de "
+#~ "cet événement ou juste cette occurrence?"
+
+#~ msgid "All"
+#~ msgstr "Tous"
+
+#~ msgid "This"
+#~ msgstr "Ce"
+
+#~ msgid "Close"
+#~ msgstr "Fermer"
+
+#~ msgid "Edit"
+#~ msgstr "Éditer"
+
+#~ msgid "Delete"
+#~ msgstr "Supprimer"
+
+#~ msgid "Schedule"
+#~ msgstr "Planifier"
+
+#, fuzzy
+#~| msgid "start"
+#~ msgid "Start"
+#~ msgstr "Début"
+
+#, fuzzy
+#~| msgid "end"
+#~ msgid "End"
+#~ msgstr "Fin"
+
+#, fuzzy
+#~| msgid "title"
+#~ msgid "Title"
+#~ msgstr "Titre"
+
+#~ msgid "Event details"
+#~ msgstr "Détails de l'événement"
+
+#, fuzzy
+#~| msgid "event"
+#~ msgid "Edit event"
+#~ msgstr "Éditer l'événement"
+
+#~ msgid "Delete event"
+#~ msgstr "Supprimer l'événement"
+
+#~ msgid "You haven't added any <a href=\"%(add_event_url)s\">event</a> yet."
+#~ msgstr ""
+#~ "Vous n'avez encore ajouté aucun <a href=\"%(add_event_url)s\">événement</"
+#~ "a>."
+
+#, fuzzy
+#~| msgid "event"
+#~ msgid "Add event"
+#~ msgstr "Ajouter un événement"
+
+#, fuzzy
+#~| msgid "start"
+#~ msgid "Starts"
+#~ msgstr "Débute"
+
+#, fuzzy
+#~| msgid "%(start)s to %(end)s"
+#~ msgid "%(start_date)s"
+#~ msgstr "%(start)s à %(end)s"
+
+#~ msgid "Ends"
+#~ msgstr "Termine"
+
+#~ msgid "Reoccurs"
+#~ msgstr "Se reproduit"
+
+#~ msgid "Until"
+#~ msgstr "Jusqu'à"
+
+#, fuzzy
+#~| msgid "description"
+#~ msgid "Description"
+#~ msgstr "Description"
+
+#~ msgid ""
+#~ "Do you want to cancel this occurrence or delete all occurrences of this "
+#~ "event?"
+#~ msgstr ""
+#~ "Voulez-vous annuler cette occurrence ou supprimer toutes lesoccurrences "
+#~ "de cet événement?"
+
+#~ msgid "Do you want to edit this occurrence or all occurrences?"
+#~ msgstr "Voulez-vous éditer cette occurence ou toutes les occurrences?"
+
+#~ msgid "Calendar metadata"
+#~ msgstr "Metadata du calendrier"
+
+#, fuzzy
+#~| msgid "name"
+#~ msgid "Name:"
+#~ msgstr "Nom"
+
+#, fuzzy
+#~| msgid "slug"
+#~ msgid "Slug:"
+#~ msgstr "nom court"
+
+#~ msgid "See as:"
+#~ msgstr "Voir comme:"
+
+#~ msgid "Small Month"
+#~ msgstr "Petit mois"
+
+#, fuzzy
+#~| msgid "Monthly"
+#~ msgid "1 Month"
+#~ msgstr "1 mois"
+
+#, fuzzy
+#~| msgid "Monthly"
+#~ msgid "3 Months"
+#~ msgstr "3 mois"
+
+#~ msgid "This Year"
+#~ msgstr "Cette année"
+
+#~ msgid "Feed"
+#~ msgstr "Remplir"
+
+#, fuzzy
+#~| msgid "Weekly"
+#~ msgid "Week"
+#~ msgstr "Hebdomadaire"
+
+#, fuzzy
+#~| msgid "Monthly"
+#~ msgid "Month"
+#~ msgstr "Mensuel"
+
+#, fuzzy
+#~| msgid "Yearly"
+#~ msgid "Year"
+#~ msgstr "Annuel"
+
+#~ msgid "Today"
+#~ msgstr "Aujourd'hui"
+
+#~ msgid "Available Calendars"
+#~ msgstr "Calendriers disponibles"
+
+#~ msgid "This month"
+#~ msgstr "Ce mois-ci"
+
+#~ msgid "Three Month Calendar"
+#~ msgstr "Calendrier à trois mois"
+
+#~ msgid "Full Year Calendar"
+#~ msgstr "Calendrier annuel complet"
+
+#, fuzzy
+#~| msgid "Monthly"
+#~ msgid "Monthly Calendar"
+#~ msgstr "Calendrier mensuel"
+
+#~ msgid "This week"
+#~ msgstr "Cette semaine"
+
+#~ msgid "Current Month Calendar"
+#~ msgstr "Calendrier du mois en cours"
+
+#~ msgid "Current Year Calendar"
+#~ msgstr "Calendrier de l'année en cours"
+
+#~ msgid "Are you sure that you really want to cancel this occurrence?"
+#~ msgstr "Êtes-vous sûr de vraiment vouloir supprimer cette occurrence?"
+
+#~ msgid ""
+#~ "\n"
+#~ "  <strong>From</strong> %(start_date)s\n"
+#~ "  <strong>to</strong> %(end_date)s<br>\n"
+#~ "  "
+#~ msgstr ""
+#~ "\n"
+#~ "  <strong>De</strong> %(start_date)s\n"
+#~ "  <strong>à</strong> %(end_date)s<br>\n"
+#~ "  "
+
+#~ msgid "Create or change event. All fields are required."
+#~ msgstr "Créer ou changer un événement. Tout les champs sont requis."
+
+#~ msgid "Save"
+#~ msgstr "Sauvegarder"
+
+#, fuzzy
+#~| msgid "Are you sûr that you really want to delete it?"
+#~ msgid "Are you sure that you really want to delete it?"
+#~ msgstr "Êtes-vous sûre de vraiment vouloir supprimer ceci?"
+
+#~ msgid "Create or change occurrence. All fields are required."
+#~ msgstr "Créer ou changer des occurrences. Tout les champs son requis."
+
+#, fuzzy
+#~| msgid "Daily"
+#~ msgid "Day"
+#~ msgstr "Quotidien"
+
+#~ msgid "until"
+#~ msgstr "jusqu'à"
+
+#, fuzzy
+#~| msgid "end recurring period"
+#~ msgid "%(end_recurring_date)s"
+#~ msgstr "fin de la période de récurrence"
+
+#~ msgid "Never. This is a 'one time only' event."
+#~ msgstr "Jamais. C'est un événement ponctuel."
+
+#~ msgid "Create a Calendar"
+#~ msgstr "Créer un calendrier"
+
+#, fuzzy
+#~| msgid "calendar"
+#~ msgid "Your Calendars"
+#~ msgstr "Votre calendrier"
+
+#, fuzzy
+#~| msgid "calendar"
+#~ msgid "All Calendars"
+#~ msgstr "Tout les calendriers"
+
+#~ msgid "Name: %(calendar_name)s"
+#~ msgstr "Nom: %(calendar_name)s"
+
+#~ msgid "Slug: %(calendar_slug)s"
+#~ msgstr "Nom court: %(calendar_slug)s"
+
+#~ msgid "Event count: %(events_count)s"
+#~ msgstr "Compteur d'événements: %(events_count)s"
+
+#~ msgid "AM"
+#~ msgstr "AM"
+
+#~ msgid "PM"
+#~ msgstr "PM"
+
+#~ msgid "Month: %(start)s-%(end)s"
+#~ msgstr "Mois : %(start)s-%(end)s"

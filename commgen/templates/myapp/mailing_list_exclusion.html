@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Christmas Email</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+     <div class="navbar-nav" style="margin-left: 30rem">
+     	<a href="#" class="btn btn-success" style="margin-left: .1rem">{% trans 'Save as draft' %}</a>
+     	<a href="{% url 'audience' %}" class="btn btn-success" style="margin-left: .1rem">{% trans 'Previous' %}</a>
+     	<a href="" class="btn btn-success" style="margin-left: .1rem">{% trans 'Next' %}</a>
+     	<a href="" class="btn btn-success" style="margin-left: .1rem">{% trans 'Cancel' %}</a>
+     	<a href="" class="btn btn-success" style="margin-left: .1rem">{% trans 'Submit' %}</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+	<div class="row">
+		<div class="col-md-2" style="padding:0; ">
+			<ul class="list-group">
+			  <li class="list-group-item">{% trans 'Audience' %}</li>
+			  <li class="list-group-item active">{% trans 'Mailing List Exclusion' %}/{% trans 'Count' %}</li>
+			  <li class="list-group-item">{% trans 'Other' %}/{% trans 'Attachment' %}/ {% trans 'Dynamic Variable' %}</li>
+			  <li class="list-group-item">{% trans 'Template' %}</li>
+			  <li class="list-group-item">{% trans 'Schedule' %}/{% trans 'Co-Author' %}</li>
+			  <li class="list-group-item">{% trans 'Preview' %}</li>
+			  <li class="list-group-item">{% trans 'Approval Workflow' %}</li>
+			</ul>
+		</div>
+		<div class="col-md-10">
+			<div class="jumbotron" style="border: 1px solid #ddd;border-radius: 30px;margin-top: 1rem">
+			  <div class="container">
+			    <h1 class="display-4">Fluid jumbotron</h1>
+			    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock  %}

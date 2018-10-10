@@ -1,0 +1,422 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-11 11:10+0530\n"
+"PO-Revision-Date: 2016-12-26 18:27+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: .\schedule\apps.py:9
+#, fuzzy
+#| msgid "Schedule"
+msgid "Schedules"
+msgstr "Aikataulu"
+
+#: .\schedule\forms.py:11 .\schedule\models\events.py:55
+#: .\schedule\models\events.py:569
+msgid "start"
+msgstr "alku"
+
+#: .\schedule\forms.py:12 .\schedule\models\events.py:56
+#: .\schedule\models\events.py:570
+msgid "end"
+msgstr "loppu"
+
+#: .\schedule\forms.py:13 .\schedule\forms.py:18
+msgid "The end time must be later than start time."
+msgstr "Loppumisajan täytyy olla myöhemmin kuin alkamisajan."
+
+#: .\schedule\forms.py:26
+msgid "End recurring period"
+msgstr "Lopeta toistumisjakso"
+
+#: .\schedule\forms.py:27 .\schedule\models\events.py:76
+msgid "This date is ignored for one time only events."
+msgstr ""
+"Tätä päivämäärää ei oteta huomioon vain kerran toistuville tapahtumille."
+
+#: .\schedule\models\calendars.py:142 .\schedule\models\rules.py:51
+msgid "name"
+msgstr "nimi"
+
+#: .\schedule\models\calendars.py:143
+msgid "slug"
+msgstr "lyhenne"
+
+#: .\schedule\models\calendars.py:147 .\schedule\models\calendars.py:225
+#: .\schedule\models\events.py:82
+msgid "calendar"
+msgstr "kalenteri"
+
+#: .\schedule\models\calendars.py:148
+#, fuzzy
+#| msgid "calendar"
+msgid "calendars"
+msgstr "kalenteri"
+
+#: .\schedule\models\calendars.py:229 .\schedule\models\events.py:550
+msgid "distinction"
+msgstr "erottelu"
+
+#: .\schedule\models\calendars.py:230
+msgid "inheritable"
+msgstr "periytyvä"
+
+#: .\schedule\models\calendars.py:235
+msgid "calendar relation"
+msgstr "kalenterirelaatio"
+
+#: .\schedule\models\calendars.py:236
+msgid "calendar relations"
+msgstr "kalenterirelaatiot"
+
+#: .\schedule\models\events.py:56
+msgid "The end time must be later than the start time."
+msgstr "Loppumisajan täytyy olla myöhemmin kuin alkamisajan."
+
+#: .\schedule\models\events.py:57 .\schedule\models\events.py:567
+msgid "title"
+msgstr "otsikko"
+
+#: .\schedule\models\events.py:58 .\schedule\models\events.py:568
+#: .\schedule\models\rules.py:52
+msgid "description"
+msgstr "kuvaus"
+
+#: .\schedule\models\events.py:64
+msgid "creator"
+msgstr "luoja"
+
+#: .\schedule\models\events.py:66 .\schedule\models\events.py:574
+msgid "created on"
+msgstr "luotu"
+
+#: .\schedule\models\events.py:67 .\schedule\models\events.py:575
+msgid "updated on"
+msgstr "päivitetty"
+
+#: .\schedule\models\events.py:73 .\schedule\models\rules.py:65
+msgid "rule"
+msgstr "sääntö"
+
+#: .\schedule\models\events.py:74
+msgid "Select '----' for a one time only event."
+msgstr "Valitse '----' kerran toistuvalle tapahtumalle."
+
+#: .\schedule\models\events.py:75
+msgid "end recurring period"
+msgstr "lopeta toistumisjakso"
+
+#: .\schedule\models\events.py:83
+msgid "Color event"
+msgstr "Tapahtuman väri"
+
+#: .\schedule\models\events.py:87 .\schedule\models\events.py:546
+#: .\schedule\models\events.py:566
+msgid "event"
+msgstr "tapahtuma"
+
+#: .\schedule\models\events.py:88
+msgid "events"
+msgstr "tapahtumat"
+
+#: .\schedule\models\events.py:95
+#, python-format
+msgid "%(title)s: %(start)s - %(end)s"
+msgstr "%(title)s: %(start)s - %(end)s"
+
+#: .\schedule\models\events.py:555
+msgid "event relation"
+msgstr "tapahtumarelaatio"
+
+#: .\schedule\models\events.py:556
+msgid "event relations"
+msgstr "tapahtumarelaatiot"
+
+#: .\schedule\models\events.py:571
+msgid "cancelled"
+msgstr "peruttu"
+
+#: .\schedule\models\events.py:572
+msgid "original start"
+msgstr "alkuperäinen alku"
+
+#: .\schedule\models\events.py:573
+msgid "original end"
+msgstr "alkuperäinen loppu"
+
+#: .\schedule\models\events.py:578
+msgid "occurrence"
+msgstr "toistokerta"
+
+#: .\schedule\models\events.py:579
+msgid "occurrences"
+msgstr "toistokerrat"
+
+#: .\schedule\models\events.py:665
+#, python-format
+msgid "%(start)s to %(end)s"
+msgstr "%(start)s %(end)s"
+
+#: .\schedule\models\rules.py:12
+msgid "Yearly"
+msgstr "Vuosittainen"
+
+#: .\schedule\models\rules.py:13
+msgid "Monthly"
+msgstr "Kuukausittainen"
+
+#: .\schedule\models\rules.py:14
+msgid "Weekly"
+msgstr "Viikottainen"
+
+#: .\schedule\models\rules.py:15
+msgid "Daily"
+msgstr "Päivittäinen"
+
+#: .\schedule\models\rules.py:16
+msgid "Hourly"
+msgstr "Tunnittainen"
+
+#: .\schedule\models\rules.py:17
+msgid "Minutely"
+msgstr "Minuutittainen"
+
+#: .\schedule\models\rules.py:18
+msgid "Secondly"
+msgstr "Sekuntittainen"
+
+#: .\schedule\models\rules.py:53
+msgid "frequency"
+msgstr "toistuminen"
+
+#: .\schedule\models\rules.py:54
+msgid "params"
+msgstr "parametrit"
+
+#: .\schedule\models\rules.py:66
+msgid "rules"
+msgstr "säännöt"
+
+#: .\schedule\periods.py:355
+#, python-format
+msgid "Week: %(start)s-%(end)s"
+msgstr "Viikko: %(start)s-%(end)s"
+
+#: .\schedule\periods.py:396
+#, python-format
+msgid "Day: %(start)s-%(end)s"
+msgstr "Päivä: %(start)s-%(end)s"
+
+#~ msgid "This is a demo of a django-schedule calendar"
+#~ msgstr "Tämä on django-schedule -kalenterin demo"
+
+#~ msgid "clear"
+#~ msgstr "pyyhi"
+
+#~ msgid "Add New Session"
+#~ msgstr "Lisää Uusi Sessio"
+
+#~ msgid "Event"
+#~ msgstr "Tapahtuma"
+
+#~ msgid ""
+#~ "Would you like to <span id=\"editordelete\"></span> all occurrences in "
+#~ "this event or just this occurrence?"
+#~ msgstr ""
+#~ "Haluaisitko <span id=\"editordelete\"></span>kaikki tämän tapahtuman "
+#~ "toistokerrat vai vain tämän toistokerran?\v"
+
+#~ msgid "All"
+#~ msgstr "Kaikki"
+
+#~ msgid "This"
+#~ msgstr "Tämä"
+
+#~ msgid "Close"
+#~ msgstr "Sulje"
+
+#~ msgid "Edit"
+#~ msgstr "Muokkaa"
+
+#~ msgid "Delete"
+#~ msgstr "Poista"
+
+#~ msgid "Start"
+#~ msgstr "Alku"
+
+#~ msgid "End"
+#~ msgstr "Loppu"
+
+#~ msgid "Title"
+#~ msgstr "Otsikko"
+
+#~ msgid "Event details"
+#~ msgstr "Tapahtuman tiedot"
+
+#~ msgid "Edit event"
+#~ msgstr "Muokkaa tapahtumaa"
+
+#~ msgid "Delete event"
+#~ msgstr "Poista tapahtuma"
+
+#~ msgid "You haven't added any <a href=\"%(add_event_url)s\">event</a> yet."
+#~ msgstr ""
+#~ "Et ole lisännyt yhtään <a href=\"%(add_event_url)s\"> tapahtumaa</a> "
+#~ "vielä."
+
+#~ msgid "Add event"
+#~ msgstr "Lisää tapahtuma"
+
+#~ msgid "Starts"
+#~ msgstr "Alkaa"
+
+#~ msgid "DATETIME_FORMAT"
+#~ msgstr "DATETIME_FORMAT"
+
+#~ msgid "%(start_date)s"
+#~ msgstr "%(start_date)s"
+
+#~ msgid "Ends"
+#~ msgstr "Loppuu"
+
+#~ msgid "%(end_date)s"
+#~ msgstr "%(end_date)s"
+
+#~ msgid "Reoccurs"
+#~ msgstr "Toistuu"
+
+#~ msgid "Until"
+#~ msgstr "Asti"
+
+#~ msgid "Description"
+#~ msgstr "Kuvaus"
+
+#~ msgid ""
+#~ "Do you want to cancel this occurrence or delete all occurrences of this "
+#~ "event?"
+#~ msgstr ""
+#~ "Haluatko perua tämän toistokerran vai poistaa kaikki toistokerrat tälle "
+#~ "tapahtumalle?"
+
+#~ msgid "Do you want to edit this occurrence or all occurrences?"
+#~ msgstr "Haluatko muokata tätä toistokertaa vai kaikkia toistokertoja?"
+
+#~ msgid "Calendar metadata"
+#~ msgstr "Kalenterin metatiedot"
+
+#~ msgid "Name:"
+#~ msgstr "Nimi:"
+
+#~ msgid "Slug:"
+#~ msgstr "Lyhenne:"
+
+#~ msgid "Event count:"
+#~ msgstr "Tapahtumien määrä:"
+
+#~ msgid "See as:"
+#~ msgstr "Katsele:"
+
+#~ msgid "Small Month"
+#~ msgstr "Kuukausi (pieni)"
+
+#~ msgid "1 Month"
+#~ msgstr "1 kuukausi"
+
+#~ msgid "3 Months"
+#~ msgstr "3 kuukautta"
+
+#~ msgid "This Year"
+#~ msgstr "Tämä vuosi"
+
+#~ msgid "Feed"
+#~ msgstr "Syöte"
+
+#~ msgid "Now see docstring for schedule.views.calendar"
+#~ msgstr "Katso dokumentaatio schedule.views.calendar moduulille"
+
+#~ msgid "Week"
+#~ msgstr "Viikko"
+
+#~ msgid "Month"
+#~ msgstr "Kuukausi"
+
+#~ msgid "Year"
+#~ msgstr "Vuosi"
+
+#~ msgid "Today"
+#~ msgstr "Tänään"
+
+#~ msgid "Available Calendars"
+#~ msgstr "Saatavilla olevat kalenterit"
+
+#~ msgid "This month"
+#~ msgstr "Tämä kuukausi"
+
+#~ msgid "Three Month Calendar"
+#~ msgstr "Kolmen kuukauden kalenteri"
+
+#~ msgid "Full Year Calendar"
+#~ msgstr "Vuoden täysi kalenteri"
+
+#~ msgid "Monthly Calendar"
+#~ msgstr "Kuukauden kalenteri"
+
+#~ msgid "This week"
+#~ msgstr "Tämä viikko"
+
+#~ msgid "Current Month Calendar"
+#~ msgstr "Tämän kuukauden kalenteri"
+
+#~ msgid "Current Year Calendar"
+#~ msgstr "Tämän vuoden kalenteri"
+
+#~ msgid "Are you sure that you really want to cancel this occurrence?"
+#~ msgstr "Oletko varma, että haluat poistaa tämän toistokerran?"
+
+#~ msgid ""
+#~ "\n"
+#~ "  <strong>From</strong> %(start_date)s\n"
+#~ "  <strong>to</strong> %(end_date)s<br>\n"
+#~ "  "
+#~ msgstr ""
+#~ "\n"
+#~ "  <strong>Alkupäivämäärä</strong> %(start_date)s\n"
+#~ "  <strong>Loppupäivämäärä</strong> %(end_date)s<br>\n"
+#~ "  "
+
+#~ msgid "Create or change event. All fields are required."
+#~ msgstr "Luo tapahtuma tai muokkaa sitä. Kaikki kentät vaaditaan."
+
+#~ msgid "Save"
+#~ msgstr "Tallenna."
+
+#~ msgid "Are you sure that you really want to delete it?"
+#~ msgstr "Haluatko varmasti poistaa?"
+
+#~ msgid "Create or change occurrence. All fields are required."
+#~ msgstr "Luo tai muokkaa toistokertaa. Kaikki kentät vaaditaan."
+
+#~ msgid "Day"
+#~ msgstr "Päivä"
+
+#~ msgid "until"
+#~ msgstr "asti"
+
+#~ msgid "%(end_recurring_date)s"
+#~ msgstr "%(end_recurring_date)s"
+
+#~ msgid "Never. This is a 'one time only' event."
+#~ msgstr "Ei ikinä. Tämä on vain yhden kerran tapahtuva tapahtuma."
