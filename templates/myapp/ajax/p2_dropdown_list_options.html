@@ -1,4 +1,6 @@
-<option value="">---------</option>
 {% for p2 in p2_department %}
-<option value="{{ p2.m2_department_id }}">{{ p2.m2_department_name }}</option>
+<div class="custom-select-option">
+<input onchange="toggleFillColor(this);" type="checkbox"
+  name="p2[]" value="{{p2.m2_department_id}}" id=""> {{p2.m2_department_name}}
+</div>
 {% endfor %}

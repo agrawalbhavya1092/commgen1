@@ -1,16 +1,18 @@
 {% load scheduletags %}
 {% load tz %}
 {% ifnotequal day.start.month month.start.month %}
-  <td class="muted"></td>
+  <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff"></td>
 {% else %}
   {% if day.has_occurrences %}
-    <td class="btn btn-outline-primary" style="border: 2px solid #f16e00;background-color: #fff" data-toggle="tooltip" data-placement="top" title="{{day|get_event_on_tooltip}}">
+    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff;background-color: #000;" data-toggle="tooltip" data-placement="top" title="{{day|get_event_on_tooltip}}">
+  {% elif date_today == day.start.date %}
+    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff;background-color: #f16e00;">
   {% else %}
-    <td>
+    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff">
   {% endif %}
-  <a href="{% url "day_calendar" calendar.slug %}{% querystring_for_date day.start 3 %}">
-    <strong>{{day.start.day}}</strong>
-  </a>
+  <!-- <a href="{% url "day_calendar" calendar.slug %}{% querystring_for_date day.start 3 %}"> -->
+    <strong {% if day.has_occurrences %} style="color: #fff;" {% elif date_today == day.start.date %} style="color: #000" {% endif %}>{{day.start.day}}</strong>
+  <!-- </a> -->
   {% ifnotequal size "small" %}
     {% include "schedule/_day_cell_big.html" %}
   {% endifnotequal %}

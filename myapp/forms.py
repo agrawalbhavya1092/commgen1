@@ -1,11 +1,21 @@
 from django import forms
 from .models import *
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+
+class EditorForm(forms.ModelForm):
+    class Meta:
+        model = Campaign
+        fields=('campaign_body',)
+    campaign_body = forms.CharField(widget=CKEditorUploadingWidget())
+
+
+class CampaignForm(forms.ModelForm):
+    class Meta:
+        model = Campaign
+        fields=('name','description')
+    form_type = forms.CharField(required=False)
 
 class MailingListForm(forms.Form):
-    # class Meta:
-        # model = Person
-        # fields = ('name', 'birthdate', 'country', 'city')
-
     entity = forms.ModelChoiceField(queryset=DepartmentSetup.objects.all().values('source').distinct())
     p1_department = forms.ModelMultipleChoiceField(queryset=DepartmentSetup.objects.all().values('m1_department_id','m1_department_name').distinct())
 
@@ -18,7 +28,4 @@ class MailingListForm(forms.Form):
                 source = int(self.data.get('source'))
                 self.fields['m1_department_id'].queryset = DepartmentSetup.objects.filter(source=source).order_by()
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        # elif self.instance.pk:
-            # self.fields['m1_department_id'].queryset = self.order_by('name')
-            # self.fields['p1_department_id'].queryset = self.instance.country.city_set.order_by('name')
+                pass

@@ -1,1 +1,0 @@
-######## Project written in Python 3 ##############

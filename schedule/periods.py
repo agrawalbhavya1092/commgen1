@@ -23,14 +23,14 @@ if settings.FIRST_DAY_OF_WEEK == 1:
     # The calendar week starts on Monday
     for i in range(7):
         weekday_names.append(WEEKDAYS[i])
-        weekday_abbrs.append(WEEKDAYS_ABBR[i])
+        weekday_abbrs.append(WEEKDAYS_ABBR[i][0:2])
 else:
     # The calendar week starts on Sunday, not Monday
     weekday_names.append(WEEKDAYS[6])
-    weekday_abbrs.append(WEEKDAYS_ABBR[6])
+    weekday_abbrs.append(WEEKDAYS_ABBR[6][0:2])
     for i in range(6):
         weekday_names.append(WEEKDAYS[i])
-        weekday_abbrs.append(WEEKDAYS_ABBR[i])
+        weekday_abbrs.append(WEEKDAYS_ABBR[i][0:2])
 
 
 class Period(object):

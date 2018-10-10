@@ -1,10 +1,114 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
+{% load apptags %}
 {% block content %}
+<div class="container theme-showcase" role="main" style="font-family: arial;">
 
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save" />
-</form>
+<div class="row">
+  <div class="col-md-6">
+    <h1 style="font-size: 40px">Create your Campaign</h1>
+  </div>
+</div>
+<nav class="o-stepbar">
+    <ol>
+        <li class="stepbar-item current">
+            <a class="stepbar-link" href="#" title="Step 1 : General Info">
+                <span class="step-number">{% trans '1' %}</span>
+                <span class="step-title">{% trans 'General Info' %}</span>
+            </a>
+        </li>
+        <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 2 : Template" aria-current="step">
+                <span class="step-number">{% trans '2' %}</span>
+                <span class="step-title">{% trans 'Template' %}</span>
+            </a>
+        </li>
+        <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 3 : Accusantinum">
+                <span class="step-number">{% trans '3' %}</span>
+                <span class="step-title">{% trans 'Customize' %}</span>
+            </a>
+        </li>
+<!--         <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 4 : Ipsam">
+                <span class="step-number">{% trans '4' %}</span>
+                <span class="step-title">{% trans 'Preview' %}</span>
+            </a> -->
+        </li>
+        <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 5 : Aspernatur">
+                <span class="step-number">{% trans '4' %}</span>
+                <span class="step-title">{% trans 'Delivery' %}</span>
+            </a>
+        </li>
+<!--         <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 6 : Aspernatur">
+                <span class="step-number">{% trans '6' %}</span>
+                <span class="step-title">{% trans 'Overview' %}</span>
+            </a>
+        </li> -->
+    </ol>
+</nav>
 
+    <form method="post" action="" id="campaign_form">{% csrf_token %}
+      <div class="row" style="margin-top: 2%">
+        <div class="col-md-6">
+         <p>
+          <label for="id_name">Name of the campaign</label>
+          <input type="text" name="name" class="form-control" maxlength="255" required="" id="id_name" value="{{form.instance.name}}" data-container="body" data-toggle="popover" data-placement="right" data-content="{% trans 'This name will not appear in the object of email.' %}">
+          <!-- <input type="text" name="form_type" id="id_form_type" value="{{request.path}}"> -->
+        </p>
+        <p id="form_error">
+          
+              {% if form.errors %}
+                <div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin:.3rem;padding: 1rem;max-width: 60%;">
+              {{form.errors.as_text|clean_alert}}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin:0;padding: 0">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endif %}
+        </p>
+      <p>
+        <label for="id_description">Description</label> 
+        <textarea name="description" class="form-control" cols="40" rows="8" required="" id="id_description" data-container="body" data-toggle="description_popover" data-placement="right" data-content="{% trans 'This description will help you find the campaign later.' %}">{% if form.instance.description != None %}{{form.instance.description}}{% endif %}</textarea>
+      </p>          
+        </div>
+<div class="col-md-9 offset-md-3 col-12">
+        <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 50%;">{% trans 'Cancel' %}</a>
+        <a href="" class="btn btn-secondary disabled">{% trans 'Previous' %}</a>
+        <button type="submit" class="btn btn-secondary" id='create_cmapaign_save_draft'>{% trans 'Save as draft' %}</button>
+        <button type="submit" class="btn btn-primary">{% trans 'Next' %}</button>  
+</div>
+      </div>
+    </form>    
+
+</div>
+<script type="text/javascript">
+  $(function () {
+  $('[data-toggle="popover"]').popover()
+  $('[data-toggle="description_popover"]').popover()
+})
+$('#create_cmapaign_save_draft').click(function(e){
+    e.preventDefault();
+    url = window.location.href;
+    data = $('#campaign_form').serialize()+'&form_type=ajax_request'
+    console.log(data)
+    // $('id_form_type').attr('value','ajax_request')
+    // $('id_form_type').val('ajax_request')
+    // alert("sfsfsf",$('id_form_type').val())
+        $.ajax({
+            url : url,
+            type : 'POST',
+            data : data,
+            success: function(data){
+              window.location.replace('/')
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              $('form_error').html('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin:.3rem;padding: 1rem;max-width: 60%;">Du[licaterewrww<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin:0;padding: 0"><span aria-hidden "true">&times;</span></button></div>');
+               console.log("some error");
+            }
+        });
+})
+</script>
 {% endblock  %}

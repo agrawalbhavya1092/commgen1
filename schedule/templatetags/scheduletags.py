@@ -22,11 +22,6 @@ from schedule.settings import (
 register = template.Library()
 
 @register.filter
-def get_dir(user):
-    print('.........................................................................',user.get_full_name)
-    return dir(user)
-
-@register.filter
 def get_event_on_tooltip(day):
     count = 0
     for event in day.occurrences:
@@ -86,11 +81,13 @@ def my_day_cell(context, calendar, day, month, size='regular'):
 
 @register.inclusion_tag('schedule/_day_cell.html', takes_context=True)
 def day_cell(context, calendar, day, month, size='regular'):
+    date_today = datetime.datetime.now().date()
     context.update({
         'calendar': calendar,
         'day': day,
         'month': month,
-        'size': size
+        'size': size,
+        'date_today': date_today
     })
     return context
 

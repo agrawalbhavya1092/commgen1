@@ -7,26 +7,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-    <!--
-      Neue Helvetica is a trademark of Monotype Imaging Inc. registered in the U.S.
-      Patent and Trademark Office and may be registered in certain other jurisdictions.
-      Copyright © 2014 Monotype Imaging Inc. All rights reserved.
-      Orange Company had buy the right for used Helvetica onto digital applications.
-      If you are not autorized to used it, don't include the orangeHelvetica.css
-      See NOTICE.txt for more informations.
-    -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/orangeHelvetica.css' %}">
-    <!--
-      Orange Icons
-      Copyright (C) 2016 - 2018 Orange SA All rights reserved
-      See NOTICE.txt for more informations.
-    -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/docs.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/orangeIcons.css' %}">
     <!-- Boosted CSS -->
     <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
     <link rel="stylesheet" href="{% static 'css/boosted.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-select.css' %}">
 
          <!--[if lt IE 9]>
         <link rel="stylesheet" href="css/bootstrap-orangeIE82015.css" />
@@ -48,7 +35,7 @@
     <!-- Fixed navbar -->
     {% include 'navbar.html' %}
     <!-- <main> -->
-    <div class="container theme-showcase" role="main">
+    <!-- <div class="container theme-showcase" role="main"> -->
 		{% block body %}
 		{% endblock %}
 
@@ -61,7 +48,7 @@
 <!-- </main> -->
 
       
-      </div>
+      <!-- </div> -->
     {% include 'footer.html' %}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Boosted JS. -->
@@ -74,6 +61,7 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script> -->
     <script src="{% static 'js/boosted.js' %}"></script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+
     
 
 

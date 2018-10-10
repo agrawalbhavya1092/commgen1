@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-    You have successfully logged out.
-    <a href="/">Home</a>
-</body>
-</html>
+{% extends 'base-login.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+<p>Logout</p>
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+	window.location.replace('/')
+    console.log( "ready!" );
+});
+</script>
+
+{% endblock %}

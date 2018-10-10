@@ -2,152 +2,190 @@
 {% load i18n %}
 {% load static %}
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: .5rem .5rem">
   <a class="navbar-brand" href="#">{{campaign}}</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-     <div class="navbar-nav" style="margin-left: 30rem">
-     	<button type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Save as draft' %}</button>
-     	<button type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Previous' %}</button>
-     	<button type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Next' %}</button>
-     	<button type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Cancel' %}</button>
-     	<button type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Submit' %}</button>
+     <div class="navbar-nav" style="margin-left: 40rem;">
+      <!-- <a href="" type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Save as draft' %}</a> -->
+      <a href="" type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Previous' %}</a>
+      <a href="{% url 'template' campaign %}" type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Next' %}</a>
+      <a href="{% url 'home' 'dashboard' %}" type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Cancel' %}</a>
+      <a href="" type="button" class="btn btn-success" style="margin-left: .1rem">{% trans 'Submit' %}</a>
     </div>
   </div>
 </nav>
 <div class="container">
-	<div class="row">
-		<div class="col-md-2" style="padding:0; ">
-			<ul class="list-group">
-			  <li class="list-group-item active">{% trans 'Audience' %}</li>
-			  <li class="list-group-item">{% trans 'Mailing List Exclusion' %}/{% trans 'Count' %}</li>
-			  <li class="list-group-item">{% trans 'Other' %}/{% trans 'Attachment' %}/ {% trans 'Dynamic Variable' %}</li>
-			  <li class="list-group-item">{% trans 'Template' %}</li>
-			  <li class="list-group-item">{% trans 'Schedule' %}/{% trans 'Co-Author' %}</li>
-			  <li class="list-group-item">{% trans 'Preview' %}</li>
-			  <li class="list-group-item">{% trans 'Approval Workflow' %}</li>
-			</ul>
-		</div>
-		<div class="col-md-10">
-			<div class="jumbotron" style="border: 1px solid #ddd;border-radius: 30px;margin-top: 1rem">
-        <form method="POST" action="{% url 'search_mailing_list' %}">{% csrf_token %}
-			  <div class="container">
+  <div class="row">
+      {% include 'campaign_sidebar.html' %}
+
+    <div class="col-md-10">
+      <div class="jumbotron" style="border: 1px solid #ddd;border-radius: 30px;margin-top: 1rem">
+        <form method="POST" action="">{% csrf_token %}
+        <div class="container" style="margin-top: -3rem">
           <div class="row">
-            <input type="text" name="campaign" hidden="" value="{{campaign}}">
-          <label>Entity</label>
-          <select class="custom-select" id="entity" name="entity">
-            <option value="">Select Entity</option>
-          {% for source in sources %}
-            <option value="{{source.source}}">{{source.source}}</option>
-          {% endfor %}
-          </select>
+            <div class="col-md-6">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="inclusion_flag" name="inclusion_flag">
+                <label class="custom-control-label" for="inclusion_flag">Inclusion Flag</label>
+              </div> 
+            </div>
+              <div class="col-md-6">
+              <input type="text" name="campaign" hidden="" value="{{campaign}}">
+
+              <label>Entity</label>
+              <select class="custom-select" id="entity" name="entity">
+                <option value="">Select Entity</option>
+              {% for source in sources %}
+                <option value="{{source.source}}">{{source.source}}</option>
+              {% endfor %}
+              </select>
+            </div>
+
         </div>
           <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
           <label>Department P1</label>
-          <select class="custom-select" id="id_p1" name="department_p1" multiple>
-          </select>
+        <div class="custom-select" id="id_p1-custom-select" onclick="toggleOptionBox(this)">Select Department P1</div>
+        <div id="id_p1-option-box" class="option-box">
         </div>
-    <div class="col-md-6">
+        </div>
+    <div class="col-md-4">
           <label>Department P2</label>
-          <select class="custom-select" id="id_p2" multiple>
-          </select>
+        <div class="custom-select" id="id_p2-custom-select" onclick="toggleOptionBox(this)">Select Department P2</div>
+        <div id="id_p2-option-box" class="option-box">
         </div>
-      </div>
-          <div class="row">
-    <div class="col-md-6">
+        </div>
+            <div class="col-md-4">
           <label>Department M3</label>
-          <select class="custom-select" id="id_m3" multiple>
-          </select>
+        <div class="custom-select" id="id_m3-custom-select" onclick="toggleOptionBox(this)">Select Department M3</div>
+        <div id="id_m3-option-box" class="option-box">
         </div>
-    <div class="col-md-6">
+        </div>
+      </div>
+  <div class="row">
+
+    <div class="col-md-4">
           <label>Department M4</label>
-          <select class="custom-select" id="id_m4" multiple>
-          </select>
+        <div class="custom-select" id="id_m4-custom-select" onclick="toggleOptionBox(this)">Select Department M4</div>
+        <div id="id_m4-option-box" class="option-box">
         </div>
         </div>
-        <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
           <label>Department M5</label>
-          <select class="custom-select" id="id_m5" multiple>
-          </select>
+        <div class="custom-select" id="id_m5-custom-select" onclick="toggleOptionBox(this)">Select Department M5</div>
+        <div id="id_m5-option-box" class="option-box">
         </div>
-    <div class="col-md-6">
+        </div>
+    <div class="col-md-4">
           <label>Department M6</label>
-          <select class="custom-select" id="id_m6" multiple>
-          </select>
-			  </div>
-      </div>
+        <div class="custom-select" id="id_m6-custom-select" onclick="toggleOptionBox(this)">Select Department M6</div>
+        <div id="id_m6-option-box" class="option-box">
+        </div>
+        </div>
+  </div>
         <div class="row">
-          <div class="col-md-6">
-            <label>Generic Country</label>
-            <select class="custom-select" id="id_generic_company" multiple>
+          <div class="col-md-4">
+            <label>Generic Company</label>
+            <select class="custom-select" id="id_generic_company">
+              {% for g in generic_company %}
+              <option value="{{g.generic_company}}">{{g.generic_company}}</option>
+              {% endfor %}
             </select>
           </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label>Region</label>
-          <select class="custom-select" id="id_region" multiple>
-          </select>
+        <div class="custom-select" id="id_region-custom-select" onclick="toggleOptionBox(this)">Select Region</div>
+        <div id="id_region-option-box" class="option-box">
         </div>
-      </div>
-      <div class="row">
-          <div class="col-md-6">
+        </div>
+          <div class="col-md-4">
             <label>Country</label>
-            <select class="custom-select" id="id_country" multiple>
-            </select>
+        <div class="custom-select" id="id_country-custom-select" onclick="toggleOptionBox(this)">Select Country</div>
+        <div id="id_country-option-box" class="option-box">
+        </div>
           </div>
-        <div class="col-md-6">
+      </div>
+      <div class="row">
+
+        <div class="col-md-4">
           <label>Location</label>
-          <select class="custom-select" id="id_location" multiple>
-          </select>
+        <div class="custom-select" id="id_location-custom-select" onclick="toggleOptionBox(this)">Select Location</div>
+        <div id="id_location-option-box" class="option-box">
         </div>
-      </div>
-      <div class="row">
-          <div class="col-md-6">
+        </div>
+          <div class="col-md-4">
             <label>Status</label>
-            <select class="custom-select" id="id_status" multiple>
-            </select>
+        <div class="custom-select" id="id_status-custom-select" onclick="toggleOptionBox(this)">Select Status</div>
+        <div id="id_status-option-box" class="option-box">
+        </div>
           </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label>Regular/Temporary Staff</label>
-          <select class="custom-select" id="id_staff" multiple>
-          </select>
+          <div class="custom-select" id="id_staff-custom-select" onclick="toggleOptionBox(this)">Select Staff</div>
+        <div id="id_staff-option-box" class="option-box">
+            {% for reg in regular %}
+          <div class="custom-select-option">
+          <input onchange="toggleFillColor(this);" type="checkbox"
+            name="staff[]" value="{{reg.pk}}" id=""> {{reg.value}}
+          </div>
+          {% endfor %}
+        </div>
         </div>
       </div>
       <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label>Manager/Non-Manager</label>
-            <select class="custom-select" id="id_manager" name="manager" multiple>
-            </select>
+           <div class="custom-select" id="id_manager-custom-select" onclick="toggleOptionBox(this)">Select Manager</div>
+        <div id="id_manager-option-box" class="option-box">
+              {% for man in manager %}
+          <div class="custom-select-option">
+          <input onchange="toggleFillColor(this);" type="checkbox"
+            name="staff[]" value="{{man.pk}}" id=""> {{man.value}}
           </div>
-        <div class="col-md-6">
-          <label>Preferred Language</label>
-          <select class="custom-select" id="id_preferred_language" name="preferred_language" multiple>
-          </select>
+          {% endfor %}
         </div>
-      </div>
-      <div class="row">
-          <div class="col-md-6">
-            <label>Staff Status</label>
-            <select class="custom-select" id="id_staff_status" name="manager" multiple>
-            </select>
           </div>
-<!--         <div class="col-md-6">
+        <div class="col-md-4">
           <label>Preferred Language</label>
-          <select class="custom-select" id="id_staff" multiple>
-          </select>
-        </div> -->
+           <div class="custom-select" id="id_preferred_language-custom-select" onclick="toggleOptionBox(this)">Select Manager</div>
+        <div id="id_preferred_language-option-box" class="option-box">
+            {% for lan in language %}
+          <div class="custom-select-option">
+          <input onchange="toggleFillColor(this);" type="checkbox"
+            name="language[]" value="{{lan.pk}}" id=""> {{lan.value}}
+          </div>
+          {% endfor %}
+        </div>
+        </div>
+          <div class="col-md-4">
+            <label>Staff Status</label>
+           <div class="custom-select" id="id_staff_status-custom-select" onclick="toggleOptionBox(this)">Select Staff Status</div>
+        <div id="id_staff_status-option-box" class="option-box">
+              {% for staff in staff_status %}
+          <div class="custom-select-option">
+          <input onchange="toggleFillColor(this);" type="checkbox"
+            name="staff_status[]" value="{{staff.pk}}" id=""> {{staff.value}}
+          </div>
+          {% endfor %}
+        </div>
+          </div>
       </div>
 
     </div>
     <button type="Submit" name="Submit">Search</button>
   </form>
-			</div>
-		</div>
-	</div>
+    <label for="email_list">There are {{no_of_email}} to send.</label>
+    <textarea class="form-control" id="email_list">{{email_list}}</textarea>
+      </div>
+    </div>
+  </div>
 </div>
 
   <script src="{% static 'js/myapp/audience.js' %}"></script>
+<script>
+
+  </script>
 {% endblock  %}

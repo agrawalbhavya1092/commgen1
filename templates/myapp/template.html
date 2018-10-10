@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+<div class="container theme-showcase" role="main" style="font-family: arial;">
+
+<div class="row">
+  <div class="col-md-6">
+    <h1 style="font-size: 40px">Create your Campaign</h1>
+  </div>
+</div>
+<nav class="o-stepbar">
+    <ol>
+        <li class="stepbar-item done">
+            <a class="stepbar-link" href="#" title="Step 1 : General Info">
+                <span class="step-number">{% trans '1' %}</span>
+                <span class="step-title">{% trans 'General Info' %}</span>
+            </a>
+        </li>
+        <li class="stepbar-item current">
+            <a class="stepbar-link" href="#" title="Step 2 : Template" aria-current="step">
+                <span class="step-number">{% trans '2' %}</span>
+                <span class="step-title">{% trans 'Template' %}</span>
+            </a>
+        </li>
+        <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 3 : Accusantinum">
+                <span class="step-number">{% trans '3' %}</span>
+                <span class="step-title">{% trans 'Customize' %}</span>
+            </a>
+        </li>
+<!--         <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 4 : Ipsam">
+                <span class="step-number">{% trans '4' %}</span>
+                <span class="step-title">{% trans 'Preview' %}</span>
+            </a> -->
+        </li>
+        <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 5 : Aspernatur">
+                <span class="step-number">{% trans '4' %}</span>
+                <span class="step-title">{% trans 'Delivery' %}</span>
+            </a>
+        </li>
+<!--         <li class="stepbar-item next">
+            <a class="stepbar-link" href="#" title="Step 6 : Aspernatur">
+                <span class="step-number">{% trans '6' %}</span>
+                <span class="step-title">{% trans 'Overview' %}</span>
+            </a>
+        </li> -->
+    </ol>
+</nav>
+
+<div class="row">
+
+  <div class="col-md-6"><h2 style="margin-top: 1rem">{% trans 'My Templates' %}</h2></div>
+</div>
+<div class="row">
+  <a href="" id="blank_template">
+  <div class="card" style="width: 15rem;height: 9rem">
+  <div class="card-body">
+    <h5 class="card-title" style="text-align: center;padding-top: 30px">BLANK</h5>
+  </div>
+</div>
+</a>
+</div>
+<div class="row" style="margin-top: 10%">
+          <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
+        <a href="" id="template_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
+        <a href="/" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
+        <a href="" id="template_next" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</a>  
+        <!-- <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>   -->
+</div>
+
+</div>
+<script type="text/javascript">
+    url = window.location.href
+    parameter = url.split("/")
+    slug = parameter[parameter.length - 2]
+    updatecampaign = '/campaign/updatecampaign/' + slug
+    editor_url = '/campaign/editor/' + slug
+    $('#template_previous').attr('href',updatecampaign)
+    $('#blank_template').attr('href',editor_url)
+    $('#template_next').attr('href',editor_url)
+</script>
+{% endblock  %}

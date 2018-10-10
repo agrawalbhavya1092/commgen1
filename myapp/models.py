@@ -1,11 +1,11 @@
 from django.db import models
 from .utils import increment_campaign_id
-from django.urls import reverse
 
 
 class Campaign(models.Model):
 	CAMPAIGN_STATUS = (('Draft','draft'),('Co-author Validation','co_author_validation'),('Approval Waiting','approval_waiting'),('Confirmed','confirmed'),('Scheduled','scheduled'),('Sent','sent'))
 	id = models.CharField(primary_key = True,db_column = 'CG_CAMPAIGN_ID',default=increment_campaign_id,max_length=10)
+	slug = models.SlugField(max_length=140, unique=True,db_column='CG_CAMPAIGN_SLUG',null = True)
 	name = models.CharField(max_length = 255,db_column = 'CG_CAMPAIGN_NAME')
 	description = models.TextField(null = True,db_column = 'CG_CAMPAIGN_DESC')
 	creation_date = models.DateTimeField(db_column = 'CG_CAMPAIGN_CREATION_DT',auto_now_add=True)
@@ -22,13 +22,12 @@ class Campaign(models.Model):
 	campaign_body = models.TextField(null = True,db_column = 'CG_CAMPAIGN_BODY')
 	recurrence = models.CharField(null = True,max_length=120,db_column = 'CG_CAMPAIGN_REC_ID')
 
-	def get_absolute_url(self):
-		print("self...nmae",self.name)
-		return reverse('audience',kwargs={"campaign":self.name})
+	def __str__(self):
+		return self.name
+
 
 	class Meta:
 		db_table = 'CG_Campaign_tbl'
-
 
 class CampaignAuthor(models.Model):
 	campaign = models.ForeignKey('Campaign',on_delete = models.CASCADE,db_column = 'CG_CAMPAIGN_ID')

@@ -74,6 +74,7 @@ body {
   color: #000;
   text-align: left;
   background-color: #fff;
+  padding-bottom: 40px;
 }
 
 [tabindex="-1"]:focus {
@@ -13250,6 +13251,23 @@ a:focus {
     right: 0px;
     padding: 15px 12px;
     pointer-events: none;
+}
+
+.option-box{
+  /*display: inline-block;*/
+  position: absolute;
+  background-color: white;
+  z-index: 1000;
+  border: 2px solid #ddd;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
 /*# sourceMappingURL=boosted.css.map */

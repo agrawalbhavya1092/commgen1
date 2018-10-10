@@ -1,4 +1,14 @@
-<option value="">---------</option>
-{% for p1 in p1_department %}
-<option value="{{ p1.m1_department_id }}">{{ p1.m1_department_name }}</option>
+{% for source in p1_department %}
+<div class="custom-select-option">
+<input onchange="toggleFillColor(this);" type="checkbox"
+  name="p1[]" value="{{source.m1_department_id}}" id=""> {{source.m1_department_name}}
+</div>
+
+<!--  <div class="custom-control custom-checkbox">
+  <input class="custom-control-input" onchange="toggleFillColor(this);" type="checkbox"
+  name="p1[]" value="{{source.m1_department_id}}" id="">
+  <label class="custom-control-label" for="">{{source.m1_department_name}}</label>
+</div>  -->
+
+
 {% endfor %}

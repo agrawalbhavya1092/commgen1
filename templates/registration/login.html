@@ -1,63 +1,10 @@
-{% extends "base.html" %}
+{% extends "base-login.html" %}
 
 {% load i18n %}
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
+<p style="margin-top: 10%;">Login</p>
+{% include 'registration/login_form.html' %}
 
-
-
-<div class="container" style="background: #cccccc;max-width: 60%;margin-top: 5%">
-	<div class="row">
-		<div class="col-12 col-sm-12 col-md-8 col-lg-8 offset-md-5" style="margin-bottom: 4%;margin-top: 3%">
-<h1 style="font-weight: 600">{% trans "Sign In" %}</h1>
-</div>
-</div>
-	<div class="row">
-		<div class="col-12 col-sm-12 col-md-8 col-lg-8 offset-md-2" style="margin-bottom: 4%">
-			<!-- Start form -->
-					<form class="login" method="POST" action="{% url 'login' %}">
- 					 {% csrf_token %}
-                      <div class="form-group">
-                          	<label for="id_username">{% trans 'Email address' %}</label>
-    						<input type="text" name="username" class="form-control" aria-describedby="emailHelp" maxlength="254" required="" id="id_username" placeholder="Enter email">
-                      </div>
-                      <div class="form-group">
-                        <label for="id_password">{% trans 'Password' %}</label>
-  						<input type="password" class="form-control" name="password" required="" id="id_password" placeholder="Enter password">
-                      </div>
-                      <div class="form-check" style="margin-top: 10%;margin-bottom: 8%">
-                        <button class="btn btn-primary" type="button" name="showpassword" id="showpassword" value="Show Password">{% trans 'Show Password' %}</button> 
-                        <button type="submit" class="btn btn-primary">{% trans 'Submit' %}</button>
-                      </div>
-                      
-                    </form>
-
-
-			<!-- End form -->
-		</div>
-		
-	</div>
-		</div>
-
-<script type="text/javascript">
-jQuery(document).ready(function(){
-	// Show password Button
-	$("#showpassword").on('click', function(){
-		
-		var pass = $("#id_password");
-		var fieldtype = pass.attr('type');
-		if (fieldtype == 'password') {
-			pass.attr('type', 'text');
-			$(this).text("{% trans 'Hide Password' %}");
-		}else{
-			pass.attr('type', 'password');
-			$(this).text("Show Password");
-		}
-
-
-	});
-});
-
-</script>
 {% endblock %}
