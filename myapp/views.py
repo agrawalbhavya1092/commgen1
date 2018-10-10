@@ -13,6 +13,7 @@ from django.core.mail import send_mail
 from .constants import *
 from django.forms.utils import ErrorList
 from .utils import get_unique_slug
+import json
 # from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect,render
 
@@ -127,35 +128,41 @@ class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView)
 
 class NewCampaignCreate(LoginRequiredMixin,CreateView):
     model = Campaign
-    fields = ['name','description']
+    # fields = ['name','description']
     template_name = 'myapp/create_new_campaign.html'
     success_url = '/campaign/template/'
+    form_class = CampaignForm
+    
     
     def form_valid(self, form):
-        print("....................",form)
         campaign_slug = get_unique_slug(form.instance.name)
         form.instance.creator = self.request.user
         form.instance.status = 'Draft'
         form.instance.creation_date = datetime.datetime.now()
         campaign_name = form.instance.name
+        request_type = form.cleaned_data.get('form_type','')
         form.instance.slug = campaign_slug
         self.success_url = self.success_url + campaign_slug
         obj = Campaign.objects.filter(name=campaign_name,creator=self.request.user)
+        print("form type....",request_type)
         if len(obj)>0:
             form._errors[forms.forms.NON_FIELD_ERRORS] = ErrorList([
                     u'Campaign name already exists. Please enter another name for campaign.'
                 ])
+            print("erroe.....")
+            if request_type == 'ajax_request':
+                print("erroe ajax.......")
+                return json.dumps({'error': 404,'message': form.errors,})
             return self.form_invalid(form)
         return super(NewCampaignCreate, self).form_valid(form)
 
 class CampaignUpdate(LoginRequiredMixin,CampaignAuthorizeMixin,UpdateView):
     model = Campaign
-    # fields = ['name','description']
     template_name = 'myapp/create_new_campaign.html'
     success_url = '/campaign/template/'
     form_class = CampaignForm
     def form_valid(self, form):
-        print("form.......",dir(form))
+        request_type = form.cleaned_data.get('form_type','')
         campaign_name = form.instance.name
         campaign_slug = self.kwargs["slug"]
         form.instance.creation_date = datetime.datetime.now()
@@ -169,30 +176,11 @@ class CampaignUpdate(LoginRequiredMixin,CampaignAuthorizeMixin,UpdateView):
                 form._errors[forms.forms.NON_FIELD_ERRORS] = ErrorList([
                         u'Campaign name already exists. Please enter another name for campaign.'
                     ])
+                if request_type == 'ajax_request':
+                    return json.dumps({'error': 404,'message': form.errors,})
                 return self.form_invalid(form)
         return super(CampaignUpdate, self).form_valid(form)
 
-class CampaignDraft(LoginRequiredMixin,CampaignAuthorizeMixin,UpdateView):
-    model = Campaign
-    fields = ['name','description']
-    template_name = 'myapp/create_new_campaign.html'
-    success_url = '/'
-    def form_valid(self, form):
-        campaign_name = form.instance.name
-        campaign_slug = self.kwargs["slug"]
-        form.instance.creation_date = datetime.datetime.now()
-        form.instance.slug = campaign_slug
-        self.success_url = self.success_url + campaign_slug
-        obj = Campaign.objects.filter(name=campaign_name,creator=self.request.user).first()
-        if obj is not None:
-            if obj.slug == campaign_slug:
-                pass
-            else:
-                form._errors[forms.forms.NON_FIELD_ERRORS] = ErrorList([
-                        u'Campaign name already exists. Please enter another name for campaign.'
-                    ])
-                return self.form_invalid(form)
-        return super(CampaignUpdate, self).form_valid(form)
 
 def load_p1(request):
     source = request.GET.get('data')

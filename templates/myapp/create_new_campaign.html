@@ -105,7 +105,7 @@ $('#create_cmapaign_save_draft').click(function(e){
               window.location.replace('/')
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-              $('form_error').html('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin:.3rem;padding: 1rem;max-width: 60%;">Du[licaterewrww<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin:0;padding: 0"><span aria-hidden "true">&times;</span></button></div>');
+              $('#form_error').append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin:.3rem;padding: 1rem;max-width: 60%;">Campaign name already exists. Please enter another name for campaign.<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin:0;padding: 0"><span aria-hidden "true">&times;</span></button></div>');
                console.log("some error");
             }
         });
