@@ -5149,7 +5149,7 @@ input[type="button"].btn-block {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 3px solid #f16e00;
+  border: 2px solid;
 }
 
 .card > hr {

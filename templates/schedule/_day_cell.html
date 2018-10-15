@@ -1,20 +1,23 @@
 {% load scheduletags %}
 {% load tz %}
-{% ifnotequal day.start.month month.start.month %}
-  <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff"></td>
-{% else %}
-  {% if day.has_occurrences %}
+
+  {% if day.has_occurrences and date_today > day.start.date %}
+    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff;background-color: #999999;color: #ffffff" data-toggle="tooltip" data-placement="top" title="{{day|get_event_on_tooltip}}">
+
+  {% elif day.has_occurrences %}
     <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff;background-color: #000;" data-toggle="tooltip" data-placement="top" title="{{day|get_event_on_tooltip}}">
   {% elif date_today == day.start.date %}
-    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff;background-color: #f16e00;">
+    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff;background-color: #ff7900;">
+  {% elif date_today > day.start.date %}
+    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff;background-color: #dddddd;color: #999999">
   {% else %}
-    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff">
+    <td style="border-left: 12px solid #fff;border-bottom: 6px solid #fff;background-color: #dddddd">
   {% endif %}
-  <!-- <a href="{% url "day_calendar" calendar.slug %}{% querystring_for_date day.start 3 %}"> -->
-    <strong {% if day.has_occurrences %} style="color: #fff;" {% elif date_today == day.start.date %} style="color: #000" {% endif %}>{{day.start.day}}</strong>
-  <!-- </a> -->
-  {% ifnotequal size "small" %}
-    {% include "schedule/_day_cell_big.html" %}
-  {% endifnotequal %}
+  
+  {% if day.has_occurrences %}<a href="{% url "day_calendar" calendar.slug %}{% querystring_for_date day.start 3 %}">{% endif %}
+
+    <strong {% if day.has_occurrences %} style="color: #fff;" {% elif date_today == day.start.date %} style="color: #000" 
+    {% elif date_today > day.start.date %} style="color: #999999;" {% endif %}>{{day.start.day}}</strong>
+    
+  {% if day.has_occurrences %}</a>{% endif %}
 </td>
-{% endifnotequal %}

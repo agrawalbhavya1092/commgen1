@@ -32,11 +32,14 @@ urlpatterns = [
     path('ajax/region/', load_region,name='load_region'),
     path('ajax/country/', load_country,name='load_country'),
     path('ajax/location/', load_location,name='load_location'),
+    path('ajax/set_template/', set_template,name='set_template'),
     url(r'^audience/(?P<slug>[-\w]+)/$', AudienceView.as_view(), name='audience'),
     url(r'^updatecampaign/(?P<slug>[-\w]+)/$', CampaignUpdate.as_view(), name='updatecampaign'),
     url(r'^editor/(?P<slug>[-\w]+)/$', MailingTemplateEditorView.as_view(), name='editor'),
     url(r'^editordraft/(?P<slug>[-\w]+)/$', SaveDraftEditorView.as_view(), name='editor_draft'),
+    url(r'^ajax/autodraft/(?P<slug>[-\w]+)/$', AutoSaveDraftEditorView.as_view(), name='autodraft'),
     url(r'^template/(?P<slug>[-\w]+)/$', SelectTemplateView.as_view(), name='template'),
+    url(r'^overview/(?P<slug>[-\w]+)/$', DeliveryView.as_view(), name='overview'),
 ]
 # urlpatterns += i18n_patterns(path('',include('myapp.urls')))
 # urlpatterns += i18n_patterns(path('home/', home))

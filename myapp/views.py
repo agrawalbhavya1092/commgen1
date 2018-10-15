@@ -1,7 +1,6 @@
 from django.views.generic.edit import CreateView
 from .models import *
-# from django.shortcuts import render
-# from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _
 from django.views.generic import TemplateView
 from .mixins import GroupRequiredMixin,CampaignAuthorizeMixin
 from django.contrib.auth.decorators import login_required
@@ -14,14 +13,25 @@ from .constants import *
 from django.forms.utils import ErrorList
 from .utils import get_unique_slug
 import json
+import datetime
+# from pytz import timezone
+import pytz
 # from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect,render
+from django.views.generic.list import ListView
+from mailing_templates.models import Template,TemplateBody
+from django.http import HttpResponse
+from multiprocessing import Pool
 
 
 class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
     template_name = 'index.html'
     def get_context_data(self, **kwargs):
         try:
+            # timezone.activate(tz)
+            # datetime = timezone.now()
+            print("ddd...........",timezone.now())
+            print("itime now....",datetime.datetime.now())
             context = super(MyView, self).get_context_data(**kwargs)
             calendar = self.object
             period_class = self.kwargs['period']
@@ -42,6 +52,7 @@ class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
             period = period_class(event_list, date, tzinfo=local_timezone)
             my_period = period_class(my_event_list, date, tzinfo=local_timezone)
             campaigns = Campaign.objects.filter(creator=self.request.user)
+            # campaigns = Campaign.objects.filter(creator=self.request.user,status='Draft')
 
             context.update({
                 'campaigns':campaigns,
@@ -56,7 +67,25 @@ class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
             context = {}
         return context
 
-class AudienceView(LoginRequiredMixin,TemplateView):
+class DeliveryView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+    template_name = "myapp/overview.html"
+    # def get(self,request,*args,**kwargs):
+        # return render(request,self.template_name,{})
+    def post(self,request,*args,**kwargs):
+        print("request.......... ",dir(request.content_type))
+        my_timestamp = datetime.datetime.now() # some timestamp
+        print("timestamp now....",my_timestamp)
+        old_timezone = pytz.timezone('Asia/Kolkata')
+        print("old_timezone....",old_timezone)
+        new_timezone = pytz.timezone("UTC")
+
+        # returns datetime in the new timezone
+        my_timestamp_in_new_timezone = old_timezone.localize(my_timestamp).astimezone(new_timezone)
+        print("my_timestamp_in_new_timezone",my_timestamp_in_new_timezone)
+        return "fsf"
+
+
+class AudienceView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/delivery.html"
 
     def get(self,request,*args,**kwargs):
@@ -77,6 +106,7 @@ class AudienceView(LoginRequiredMixin,TemplateView):
         email_list = "bhavya.agrawal@puresoftware.com;divyani.dubey@orange.com;rahul.kaundal@orange.com"
         return render(request,self.template_name,{'campaign':campaign_name,'sources':source,'form':form,'generic_company':generic_company,'staff_status':STAFF_STATUS,'manager':MANAGER,'regular':REGULAR,'language':LANGUAGE,'no_of_email':no_of_email,"email_list":email_list})
 
+
 class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/editor.html"
     def get(self,request,*args,**kwargs):
@@ -88,9 +118,11 @@ class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,Templa
 
     def post(self,request,*args,**kwargs):
         campaign_name = kwargs["slug"]
-        form = EditorForm(request.POST,instance=Campaign.objects.get(slug=campaign_name))
+        instance = Campaign.objects.get(slug=campaign_name)
+        form = EditorForm(request.POST,instance=instance)
         if form.is_valid():
             form.instance.status = 'Sent'
+            form.instance.draft_stage = 3
             form.save()
         else:
             source = "Christmas"
@@ -101,11 +133,14 @@ class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,Templa
             replace1 = '"'+PROJECT_URL + '/media'
             replace2 = "'"+PROJECT_URL + "/media"
             campaign_body = campaign_body.replace('"/media',replace1).replace("'/media",replace2)
-        send_mail(
+        reciever_list = [request.user.email]
+        subject = instance.subject
+
+        send_email(
             'Greetings from Commgen',
             '',
             'Commgen',[request.user.email],
-            fail_silently=True,
+            fail_silently=False,
             html_message = campaign_body
             )
         return redirect('audience',slug=campaign_name)
@@ -116,42 +151,79 @@ class SaveDraftEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView
         campaign_name = kwargs["slug"]
         form = EditorForm(request.POST,instance=Campaign.objects.get(slug=campaign_name))
         if form.is_valid():
+            form.instance.draft_stage = 3
             form.save()
         else:
             source = "Christmas"
             return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
         return redirect('home')
 
-class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+class AutoSaveDraftEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+    template_name = "myapp/editor.html"
+    def post(self,request,*args,**kwargs):
+        data = request.POST.dict()
+        campaign_body = ''
+        for k,v in data.items():
+            if k == 'csrfmiddlewaretoken':
+                continue
+            elif k == 'campaign_body':
+                campaign_body = v
+            else:
+                campaign_body += k
+                campaign_body += v
+
+        campaign_name = kwargs["slug"]
+        cmap = Campaign.objects.filter(slug=campaign_name).update(campaign_body=campaign_body,draft_stage=3)
+        return redirect('home')
+
+class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,ListView):
     template_name = "myapp/template.html"
+    model = Template
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['alert'] = _('Select the template.')
+        campaign = self.kwargs['slug']
+        camp = Campaign.objects.get(slug=campaign)
+        context['my_template'] = camp
+        return context
+
+    def post(self,request,*args,**kwargs):
+        template_id = request.POST.get('template_id')
+        campaign = kwargs.get('slug','')
+        camp = Campaign.objects.filter(slug=campaign)
+        if template_id == 'blank_template':
+            camp.update(draft_stage=2,template=None,campaign_body='')
+        else:
+            template_body = TemplateBody.objects.get(template_id=template_id)
+            camp.update(template_id = template_id,campaign_body=template_body.body,draft_stage=2)
+        return redirect('editor',slug=kwargs['slug'])
+
+
+
 
 
 class NewCampaignCreate(LoginRequiredMixin,CreateView):
     model = Campaign
-    # fields = ['name','description']
     template_name = 'myapp/create_new_campaign.html'
     success_url = '/campaign/template/'
     form_class = CampaignForm
-    
+
     
     def form_valid(self, form):
         campaign_slug = get_unique_slug(form.instance.name)
         form.instance.creator = self.request.user
         form.instance.status = 'Draft'
-        form.instance.creation_date = datetime.datetime.now()
+        form.instance.creation_date = datetime.datetime.now().astimezone(pytz.timezone('UTC'))
         campaign_name = form.instance.name
         request_type = form.cleaned_data.get('form_type','')
         form.instance.slug = campaign_slug
         self.success_url = self.success_url + campaign_slug
         obj = Campaign.objects.filter(name=campaign_name,creator=self.request.user)
-        print("form type....",request_type)
         if len(obj)>0:
             form._errors[forms.forms.NON_FIELD_ERRORS] = ErrorList([
                     u'Campaign name already exists. Please enter another name for campaign.'
                 ])
-            print("erroe.....")
             if request_type == 'ajax_request':
-                print("erroe ajax.......")
                 return json.dumps({'error': 404,'message': form.errors,})
             return self.form_invalid(form)
         return super(NewCampaignCreate, self).form_valid(form)
@@ -177,10 +249,23 @@ class CampaignUpdate(LoginRequiredMixin,CampaignAuthorizeMixin,UpdateView):
                         u'Campaign name already exists. Please enter another name for campaign.'
                     ])
                 if request_type == 'ajax_request':
-                    return json.dumps({'error': 404,'message': form.errors,})
+                    from django.http import JsonResponse
+                    return JsonResponse({'error': 404,'message': form.errors},status=400)
                 return self.form_invalid(form)
         return super(CampaignUpdate, self).form_valid(form)
 
+def set_template(request):
+    data = request.GET
+    template_id = data['data[id]']
+    campaign = data['data[campaign]']
+    camp = Campaign.objects.filter(slug=campaign)
+    if template_id == 'blank_template':
+        camp.update(draft_stage=2,template=None,campaign_body='')
+        return HttpResponse('ok')
+
+    template_body = TemplateBody.objects.get(template_id=template_id)
+    camp.update(template_id = template_id,campaign_body=template_body.body,draft_stage=2)
+    return HttpResponse('ok')
 
 def load_p1(request):
     source = request.GET.get('data')

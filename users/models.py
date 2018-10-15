@@ -120,6 +120,7 @@ class UserManager(BaseUserManager):
             emp_id=emp_id
         )
 
+
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -183,7 +184,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     def get_full_name(self):
         # The user is identified by their email address
-        return ' '+self.pref_first_name+' '+self.pref_last_name
+        return ' '+self.first_name+' '+self.last_name
 
     def get_short_name(self):
         # The user is identified by their email address

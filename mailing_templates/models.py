@@ -14,13 +14,18 @@ class Template(models.Model):
 	type_of_template = models.CharField(max_length = 20,choices = TEMPLATE_TYPES,db_column = 'CG_MT_TYPE')
 	status = models.CharField(max_length = 20,choices = STATUS,db_column = 'CG_MT_STATUS')	
 
+	def __str__(self):
+		return self.name
 	class Meta:
 		db_table = 'CM_Template_tbl'
 
 
 class TemplateBody(models.Model):
-	template = models.ForeignKey('Template',db_column = 'CG_MT_ID', on_delete = models.CASCADE)
+	template = models.OneToOneField('Template',db_column = 'CG_MT_ID', on_delete = models.CASCADE)
 	body = models.TextField(db_column = 'CG_MT_BODY')
+
+	def __str__(self):
+		return self.template.name
 
 	class Meta:
 		db_table = 'CM_Template_body_tbl'

@@ -7,7 +7,7 @@ class Campaign(models.Model):
 	id = models.CharField(primary_key = True,db_column = 'CG_CAMPAIGN_ID',default=increment_campaign_id,max_length=10)
 	slug = models.SlugField(max_length=140, unique=True,db_column='CG_CAMPAIGN_SLUG',null = True)
 	name = models.CharField(max_length = 255,db_column = 'CG_CAMPAIGN_NAME')
-	description = models.TextField(null = True,db_column = 'CG_CAMPAIGN_DESC')
+	description = models.TextField(null = True,db_column = 'CG_CAMPAIGN_DESC',default='')
 	creation_date = models.DateTimeField(db_column = 'CG_CAMPAIGN_CREATION_DT',auto_now_add=True)
 	creator = models.ForeignKey('users.User',db_column = 'CG_CAMPAIGN_CREATOR_CUID',on_delete=models.CASCADE)
 	mailing_list = models.ForeignKey('mailing_list.MailingList',null = True,db_column = 'CG_ML_ID',on_delete=models.CASCADE)
@@ -19,8 +19,10 @@ class Campaign(models.Model):
 	campaign_from = models.CharField(null = True,max_length = 255,db_column = 'CG_CAMPAIGN_FROM')
 	campaign_cc = models.CharField(null = True,max_length = 255,db_column = 'CG_CAMPAIGN_CC')
 	campaign_bcc = models.CharField(null = True,max_length = 255,db_column = 'CG_CAMPAIGN_BCC')
+	subject = models.CharField(max_length = 500,db_column = 'CG_CAMPAIGN_SUBJECT')
 	campaign_body = models.TextField(null = True,db_column = 'CG_CAMPAIGN_BODY')
-	recurrence = models.CharField(null = True,max_length=120,db_column = 'CG_CAMPAIGN_REC_ID')
+	event = models.OneToOneField('schedule.event',null = True,max_length=120,db_column = 'CG_CAMPAIGN_REC_ID',on_delete=models.CASCADE)
+	draft_stage = models.IntegerField(default=1,db_column='CG_CAMPAIGN_DRAFT_STATUS')
 
 	def __str__(self):
 		return self.name

@@ -183,6 +183,58 @@ def get_image_files(user=None, path=''):
             yield element
 
 
+def get_public_image_files(user=None, path=''):
+    STORAGE_DIRECTORIES = 0
+    STORAGE_FILES = 1
+    # allow browsing from anywhere if user is superuser
+    # otherwise use the user path
+    if user:
+    # if user and not user.is_superuser:
+        user_path = _get_user_path(user)
+    else:
+        user_path = ''
+
+    browse_path = os.path.join(settings.CKEDITOR_UPLOAD_PATH, 'public', path)
+
+    try:
+        storage_list = storage.listdir(browse_path)
+    except NotImplementedError:
+        return
+    except OSError:
+        return
+
+    for filename in storage_list[STORAGE_FILES]:
+        if os.path.splitext(filename)[0].endswith('_thumb') or os.path.basename(filename).startswith('.'):
+            continue
+        filename = os.path.join(browse_path, filename)
+        yield filename
+
+    for directory in storage_list[STORAGE_DIRECTORIES]:
+        if directory.startswith('.'):
+            continue
+        directory_path = os.path.join(path, directory)
+        for element in get_public_image_files(path=directory_path):
+            yield element
+
+def append_file_images(filename,files,user):
+    src = utils.get_media_url(filename)
+    if getattr(settings, 'CKEDITOR_IMAGE_BACKEND', None):
+        if is_image(src):
+            thumb = utils.get_media_url(utils.get_thumb_filename(filename))
+        else:
+            thumb = utils.get_icon_filename(filename)
+        visible_filename = os.path.split(filename)[1]
+        if len(visible_filename) > 20:
+            visible_filename = visible_filename[0:19] + '...'
+    else:
+        thumb = src
+        visible_filename = os.path.split(filename)[1]
+    files.append({
+        'thumb': thumb,
+        'src': src,
+        'is_image': is_image(src),
+        'visible_filename': visible_filename,
+    })    
 def get_files_browse_urls(user=None):
     """
     Recursively walks all dirs under upload dir and generates a list of
@@ -190,25 +242,9 @@ def get_files_browse_urls(user=None):
     """
     files = []
     for filename in get_image_files(user=user):
-        src = utils.get_media_url(filename)
-        if getattr(settings, 'CKEDITOR_IMAGE_BACKEND', None):
-            if is_image(src):
-                thumb = utils.get_media_url(utils.get_thumb_filename(filename))
-            else:
-                thumb = utils.get_icon_filename(filename)
-            visible_filename = os.path.split(filename)[1]
-            if len(visible_filename) > 20:
-                visible_filename = visible_filename[0:19] + '...'
-        else:
-            thumb = src
-            visible_filename = os.path.split(filename)[1]
-        files.append({
-            'thumb': thumb,
-            'src': src,
-            'is_image': is_image(src),
-            'visible_filename': visible_filename,
-        })
-
+        append_file_images(filename,files,user)
+    for filename in get_public_image_files():
+        append_file_images(filename,files,user)
     return files
 
 

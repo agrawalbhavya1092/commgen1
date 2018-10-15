@@ -72,7 +72,7 @@
     <div class="row" style="margin-top: 1%">
         <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 55%;">{% trans 'Cancel' %}</a>
         <a href="" id="editor_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
-        <button type="submit" id="editor_save_draft" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</button>
+        <button type="submit" id="editor_save_draft" onclick="SetDest1()" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</button>
         <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Send Campaign' %}</button>  
     </div>
     </form>
@@ -90,27 +90,36 @@
     $('#editor_previous').attr('href',updatecampaign)
     $('#blank_template').attr('href',editor_url)
 
-    $("#editor_save_draft").click(function(e){
-        e.preventDefault();
+    function SetDest1() {
+            ajax_url = '/campaign/editordraft/' + slug+'/'
 
-        var editor = CKEDITOR.instances.id_campaign_body.document.getBody().getHtml();
-        var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
-        data = "csrfmiddlewaretoken="+csrf_token+"&"+"campaign_body="+editor
-        ajax_url = '/campaign/editordraft/' + slug+'/'
-            $.ajax({
-                url : ajax_url,
-                type : 'POST',
-                data : data,
-                success: function(data){
-                    window.location.replace('/')
-                }
-            });
-});
+            document.forms["form1"].action = ajax_url;
+        }
+
+//     $("#editor_save_draft").click(function(e){   
+//         e.preventDefault();
+
+//         var editor = CKEDITOR.instances.id_campaign_body.document.getBody().getHtml();
+//         var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
+//         console.log("editor......",$('form').serialize())
+//         editor = '<p>dd<img alt="" data-cke-saved-src="/media/uploads/ba12345/2018/10/12/image002_JIZ0bNb.png" src="/media/uploads/ba12345/2018/10/12/image002_JIZ0bNb.png" style="width: 25px; height: 25px;">​​​​​​​bvcbcbc</p>'
+//         // data = "csrfmiddlewaretoken="+csrf_token+"&"+"campaign_body="+editor
+//         data = "csrfmiddlewaretoken="+csrf_token+"&"+"campaign_body="+editor
+//         ajax_url = '/campaign/editordraft/' + slug+'/'
+//             $.ajax({
+//                 url : ajax_url,
+//                 type : 'POST',
+//                 data : data,
+//                 success: function(data){
+//                     // window.location.replace('/')
+//                 }
+//             });
+// });
 
 function ajax(){
     var editor = CKEDITOR.instances.id_campaign_body.document.getBody().getHtml();
     var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
-    ajax_url = '/campaign/editordraft/' + slug+'/'
+    ajax_url = '/campaign/ajax/autodraft/' + slug+'/'
     data = "csrfmiddlewaretoken="+csrf_token+"&"+"campaign_body="+editor
     console.log(data)
         $.ajax({

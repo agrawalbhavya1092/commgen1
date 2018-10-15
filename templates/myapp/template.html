@@ -32,20 +32,20 @@
             <a class="stepbar-link" href="#" title="Step 4 : Ipsam">
                 <span class="step-number">{% trans '4' %}</span>
                 <span class="step-title">{% trans 'Preview' %}</span>
-            </a> -->
+            </a>
         </li>
-        <li class="stepbar-item next">
+ -->        <li class="stepbar-item next">
             <a class="stepbar-link" href="#" title="Step 5 : Aspernatur">
                 <span class="step-number">{% trans '4' %}</span>
                 <span class="step-title">{% trans 'Delivery' %}</span>
             </a>
         </li>
-<!--         <li class="stepbar-item next">
+        <li class="stepbar-item next">
             <a class="stepbar-link" href="#" title="Step 6 : Aspernatur">
                 <span class="step-number">{% trans '6' %}</span>
                 <span class="step-title">{% trans 'Overview' %}</span>
             </a>
-        </li> -->
+        </li>
     </ol>
 </nav>
 
@@ -54,21 +54,54 @@
   <div class="col-md-6"><h2 style="margin-top: 1rem">{% trans 'My Templates' %}</h2></div>
 </div>
 <div class="row">
-  <a href="" id="blank_template">
-  <div class="card" style="width: 15rem;height: 9rem;border: 2px solid #000">
-  <div class="card-body">
-    <h5 class="card-title" style="text-align: center;padding-top: 30px;">BLANK</h5>
+    <div class="alert alert-primary alert-dismissible fade show" role="alert" style="display: none;">
+  {{alert}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin: 0;padding: .1rem">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+</div>
+<div class="row">
+  <a href="javascript:void(0)" id="blank_template" onclick="selected(this)">
+<div class="thumbnail-container" {% if my_template.template.id is None %} style="width: 15rem;height: 9rem;border: 3px solid #f16e00" {% else %} style="width: 15rem;height: 9rem;" {% endif %}>
+  <div class="thumbnail">
+   <iframe srcdoc="<h1>BLANK</h1>" frameborder="0"></iframe>
   </div>
 </div>
 </a>
+
 </div>
-<div class="row" style="margin-top: 10%">
+<div class="row">
+
+  <div class="col-md-6"><h2 style="margin-top: 1rem">{% trans 'Public Templates' %}</h2></div>
+
+</div>
+<div class="row">
+    {% for template in object_list %}
+  <a href="javascript:void(0)" id="{{template.id}}" onclick="selected(this)">
+  <div class="thumbnail-container" {% if my_template.template.id == template.id %} style="width: 15rem;height: 9rem;border: 3px solid #f16e00" {% else %} style="width: 15rem;height: 9rem;" {% endif %}>
+    <div class="thumbnail">
+     <iframe srcdoc="{{template.templatebody.body}}" frameborder="0"></iframe>
+    </div>
+  </div>
+  <h3>{{template.name}}</h3>
+  </a>
+{% endfor %}
+</div>
+<form method="post" action="" onsubmit="submit()">
+  {% csrf_token %}
+<input type="text" name="template_id" id="template_id" {% if my_template.template.id is not None %} value="{{my_template.template.id}}" {% else %} value="blank_template" {% endif %}" style="display: none;">
+
+<div class="row" style="margin-top: 2%">
           <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
         <a href="" id="template_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
-        <a href="/" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
-        <a href="" id="template_next" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</a>  
-        <!-- <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>   -->
-</div>
+        <a href="/" id='template_draft' class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
+        <button type="submit" id="template_next" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>  
+        <!-- <a href="javascript:void(0)" id="template_next" onclick="submit(this)" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</a>   -->
+</div>  
+</form>
+
 
 </div>
 <script type="text/javascript">
@@ -77,8 +110,50 @@
     slug = parameter[parameter.length - 2]
     updatecampaign = '/campaign/updatecampaign/' + slug
     editor_url = '/campaign/editor/' + slug
+    // $('#template_next').click(function(e){
+    //   var cards = $('.thumbnail-container')
+    //   var flag = 0
+    //   for(var i=0;i<cards.length;i++){
+    //         if(cards[i].getAttribute('style').indexOf('border') != -1){
+    //             flag = 1;
+    //             break;
+    //         }
+    //     }
+    //     if(flag = 0){
+    //     $('.alert').attr('style','display:block')
+    //     e.preventDefault()
+    //     }
+    // })
+
     $('#template_previous').attr('href',updatecampaign)
-    $('#blank_template').attr('href',editor_url)
-    $('#template_next').attr('href',editor_url)
+    function submit(){
+        var cards = $('.thumbnail-container')
+        for(var i=0;i<cards.length;i++){
+            if(cards[i].getAttribute('style').indexOf('border') != -1){
+                window.location.replace(editor_url)
+                return true;
+            }
+        }
+        $('.alert').attr('style','display:block')
+        return false;
+
+    }
+function selected(obj) {
+    $('.thumbnail-container').attr('style',"width: 15rem;height: 9rem;")
+    var s = $(obj).children()[0].getAttribute('style');
+    s = s+ ';border: 3px solid #f16e00'
+    $(obj).children()[0].setAttribute('style',s);
+    var id = obj.id;
+    $('#template_id').attr('value',id)
+
+    // $.ajax({
+    //     url: "/campaign/ajax/set_template/",
+    //     data: {
+    //       'data': {'id':id,'campaign':slug,'is_draft':false}  
+    //     },
+    //     success: function (data) {
+    //     }
+    //   });
+  }
 </script>
 {% endblock  %}

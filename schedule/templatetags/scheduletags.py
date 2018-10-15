@@ -69,15 +69,15 @@ def my_month_table(context, calendar, month, size='regular', shift=None):
 
 
 
-@register.inclusion_tag('schedule/_my_day_cell.html', takes_context=True)
-def my_day_cell(context, calendar, day, month, size='regular'):
-    context.update({
-        'calendar': calendar,
-        'day': day,
-        'month': month,
-        'size': size
-    })
-    return context
+# @register.inclusion_tag('schedule/_my_day_cell.html', takes_context=True)
+# def my_day_cell(context, calendar, day, month, size='regular'):
+#     context.update({
+#         'calendar': calendar,
+#         'day': day,
+#         'month': month,
+#         'size': size
+#     })
+#     return context
 
 @register.inclusion_tag('schedule/_day_cell.html', takes_context=True)
 def day_cell(context, calendar, day, month, size='regular'):
