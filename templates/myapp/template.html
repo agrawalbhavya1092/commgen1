@@ -69,6 +69,8 @@
    <iframe srcdoc="<h1>BLANK</h1>" frameborder="0"></iframe>
   </div>
 </div>
+  <h3>{% trans 'Blank Template' %}</h3>
+
 </a>
 
 </div>
@@ -79,14 +81,16 @@
 </div>
 <div class="row">
     {% for template in object_list %}
+    {% if not template.id == 3 %}
   <a href="javascript:void(0)" id="{{template.id}}" onclick="selected(this)">
-  <div class="thumbnail-container" {% if my_template.template.id == template.id %} style="width: 15rem;height: 9rem;border: 3px solid #f16e00" {% else %} style="width: 15rem;height: 9rem;" {% endif %}>
+  <div class="thumbnail-container" id="{{template.id}}" {% if my_template.template.id == template.id %} style="width: 15rem;height: 9rem;border: 3px solid #f16e00" {% else %} style="width: 15rem;height: 9rem;" {% endif %}>
     <div class="thumbnail">
      <iframe srcdoc="{{template.templatebody.body}}" frameborder="0"></iframe>
     </div>
   </div>
   <h3>{{template.name}}</h3>
   </a>
+{% endif %}
 {% endfor %}
 </div>
 <form method="post" action="" onsubmit="submit()">
@@ -96,7 +100,7 @@
 <div class="row" style="margin-top: 2%">
           <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
         <a href="" id="template_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
-        <a href="/" id='template_draft' class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
+        <a href="javascript:void(0)" id='template_draft' class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
         <button type="submit" id="template_next" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</button>  
         <!-- <a href="javascript:void(0)" id="template_next" onclick="submit(this)" class="btn btn-primary" style="margin-left: 1%;">{% trans 'Next' %}</a>   -->
 </div>  
@@ -110,20 +114,27 @@
     slug = parameter[parameter.length - 2]
     updatecampaign = '/campaign/updatecampaign/' + slug
     editor_url = '/campaign/editor/' + slug
-    // $('#template_next').click(function(e){
-    //   var cards = $('.thumbnail-container')
-    //   var flag = 0
-    //   for(var i=0;i<cards.length;i++){
-    //         if(cards[i].getAttribute('style').indexOf('border') != -1){
-    //             flag = 1;
-    //             break;
-    //         }
-    //     }
-    //     if(flag = 0){
-    //     $('.alert').attr('style','display:block')
-    //     e.preventDefault()
-    //     }
-    // })
+
+    $('#template_draft').click(function(e){
+      var cards = $('.thumbnail-container')
+      var flag = 0
+      for(var i=0;i<cards.length;i++){
+            if(cards[i].getAttribute('style').indexOf('border') != -1){
+                var id = cards[i].id
+                $.ajax({
+                  url: "/campaign/ajax/set_template/",
+                  data: {
+                    'data': {'id':id,'campaign':slug,'is_draft':true}  
+                  },
+                  success: function (data) {
+                    window.location.replace('/')
+                  }
+                });
+                break;
+        }
+        }
+
+    })
 
     $('#template_previous').attr('href',updatecampaign)
     function submit(){
@@ -145,15 +156,13 @@ function selected(obj) {
     $(obj).children()[0].setAttribute('style',s);
     var id = obj.id;
     $('#template_id').attr('value',id)
-
-    // $.ajax({
-    //     url: "/campaign/ajax/set_template/",
-    //     data: {
-    //       'data': {'id':id,'campaign':slug,'is_draft':false}  
-    //     },
-    //     success: function (data) {
-    //     }
-    //   });
   }
+
+// $("div.thumbnail-container").hover(function() {
+//   $(this).css("background-color","red")
+// });
+$(".thumbnail-container").hover(function(e) { 
+    $(this).css("border",e.type === "mouseenter"?"2px solid #f16e00":"2px solid #000") 
+})
 </script>
 {% endblock  %}

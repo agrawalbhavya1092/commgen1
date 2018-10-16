@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^editordraft/(?P<slug>[-\w]+)/$', SaveDraftEditorView.as_view(), name='editor_draft'),
     url(r'^ajax/autodraft/(?P<slug>[-\w]+)/$', AutoSaveDraftEditorView.as_view(), name='autodraft'),
     url(r'^template/(?P<slug>[-\w]+)/$', SelectTemplateView.as_view(), name='template'),
-    url(r'^overview/(?P<slug>[-\w]+)/$', DeliveryView.as_view(), name='overview'),
+    url(r'^overview/(?P<slug>[-\w]+)/$', OverView.as_view(), name='overview'),
 ]
 # urlpatterns += i18n_patterns(path('',include('myapp.urls')))
 # urlpatterns += i18n_patterns(path('home/', home))

@@ -14,7 +14,7 @@ class CampaignForm(forms.ModelForm):
         model = Campaign
         fields=('name','subject','description')
     form_type = forms.CharField(required=False)
-    # description = forms.CharField(widget=forms.Textarea,required=False)
+    description = forms.CharField(widget=forms.Textarea,required=False)
 
 class MailingListForm(forms.Form):
     entity = forms.ModelChoiceField(queryset=DepartmentSetup.objects.all().values('source').distinct())

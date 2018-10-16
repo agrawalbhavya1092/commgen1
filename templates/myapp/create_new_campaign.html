@@ -6,7 +6,7 @@
 
 <div class="row">
   <div class="col-md-6">
-    <h1 style="font-size: 40px">Create your Campaign</h1>
+    <h1 style="font-size: 40px">{% trans 'Create your Campaign' %}</h1>
   </div>
 </div>
 <nav class="o-stepbar">
@@ -14,13 +14,13 @@
         <li class="stepbar-item current">
             <a class="stepbar-link" href="#" title="Step 1 : General Info">
                 <span class="step-number">{% trans '1' %}</span>
-                <span class="step-title">{% trans 'General Info' %}</span>
+                <span class="step-title">{% trans 'Campaign Info' %}</span>
             </a>
         </li>
         <li class="stepbar-item next">
             <a class="stepbar-link" href="#" title="Step 2 : Template" aria-current="step">
                 <span class="step-number">{% trans '2' %}</span>
-                <span class="step-title">{% trans 'Template' %}</span>
+                <span class="step-title">{% trans 'Design' %}</span>
             </a>
         </li>
         <li class="stepbar-item next">
@@ -41,25 +41,29 @@
                 <span class="step-title">{% trans 'Delivery' %}</span>
             </a>
         </li>
-<!--         <li class="stepbar-item next">
+        <li class="stepbar-item next">
             <a class="stepbar-link" href="#" title="Step 6 : Aspernatur">
-                <span class="step-number">{% trans '6' %}</span>
+                <span class="step-number">{% trans '5' %}</span>
                 <span class="step-title">{% trans 'Overview' %}</span>
             </a>
-        </li> -->
+        </li>
     </ol>
 </nav>
 
-    <form method="post" action="" id="campaign_form">{% csrf_token %}
+    <form method="post" action="" id="campaign_form" style="margin-top: 1%">{% csrf_token %}
       <!-- <div class="row" style="margin-top: 2%"> -->
         <div class="row">
         <div class="col-md-6">
          <p>
-          <label for="id_name">{% trans 'Name of the campaign' %}</label>
-          <input type="text" name="name" class="form-control" maxlength="255" required="" id="id_name" value="{{form.instance.name}}" data-container="body" data-toggle="popover" data-placement="right" data-content="{% trans 'This name will not appear in the object of email.' %}">
+          <label for="id_name">{% trans 'Name of the campaign' %}*</label>
+          <input type="text" name="name" class="form-control" maxlength="255" required="" id="id_name" value="{{form.instance.name}}" data-toggle="tooltip" data-placement="right" data-placement="right" title="{% trans 'This name will not appear in the object of email.' %}">
           <!-- <input type="text" name="form_type" id="id_form_type" value="{{request.path}}"> -->
         </p>
-        <p id="form_error">
+        <p>
+          <div id="form_error" class="alert alert-primary alert-dismissible fade show" role="alert" style="display: none;">{% trans 'Campaign name already exists. Please enter another name for campaign.' %}<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin:0;padding: 0"><span aria-hidden "true">&times;</span></button></div>
+
+
+
           
               {% if form.errors %}
                 <div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin:.3rem;padding: 1rem;max-width: 60%;">
@@ -77,6 +81,17 @@
           <input type="text" name="subject" class="form-control" maxlength="255" required="" id="id_subject" value="{{form.instance.subject}}">
           <!-- <input type="text" name="form_type" id="id_form_type" value="{{request.path}}"> -->
         </p>
+                <p>
+          
+              {% if form.errors.subject %}
+                <div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin:.3rem;padding: 1rem;max-width: 60%;">
+              {{form.errors.subject|clean_alert}}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin:0;padding: 0">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endif %}
+        </p>
         </div>          
         </div>
 
@@ -84,13 +99,13 @@
         <div class="col-md-6">
          <p>
           <label for="id_authors">{% trans 'Authors' %}{% trans '(separate by a ; and 10 max)' %}</label>
-          <input type="text" name="authors" class="form-control" maxlength="255" required="" id="id_authors" value="{{request.user.get_full_name}}">
+          <input type="text" name="authors" class="form-control" maxlength="255" required="" id="id_authors" value="{{request.user.get_full_name}}" disabled="">
         </p>
         </div>
         <div class="col-md-6">
          <p>
           <label for="id_sender_email">{% trans 'Sender Email*' %}</label>
-          <input type="text" name="sender_email" class="form-control" maxlength="255" required="" id="id_sender_email" value="{{request.user.email}}">
+          <input type="text" name="sender_email" class="form-control" maxlength="255" required="" id="id_sender_email" value="{{request.user.email}}" disabled="">
         </p>
         </div>          
         </div>
@@ -98,8 +113,8 @@
           
         <div class="col-md-12">
       <!-- <p> -->
-        <label for="id_description">Description</label> 
-        <textarea name="description" class="form-control" cols="40" rows="4" id="id_description" data-container="body" data-toggle="description_popover" data-placement="right" data-content="{% trans 'This description will help you find the campaign later.' %}">{% if form.instance.description != None %}{{form.instance.description}}{% endif %}</textarea>
+        <label for="id_description">{% trans 'Description' %}</label> 
+        <textarea name="description" class="form-control" cols="40" rows="4" id="id_description" data-toggle="tooltip" data-placement="right" data-placement="right" title="{% trans 'This description will help you find the campaign later.' %}">{% if form.instance.description != None %}{{form.instance.description}}{% endif %}</textarea>
       <!-- </p>           -->
         </div>
 
@@ -133,7 +148,8 @@ $('#create_cmapaign_save_draft').click(function(e){
               window.location.replace('/')
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-              $('#form_error').append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin:.3rem;padding: 1rem;max-width: 60%;">Campaign name already exists. Please enter another name for campaign.<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin:0;padding: 0"><span aria-hidden "true">&times;</span></button></div>');
+              $('#form_error').attr('style','margin:.3rem;padding: 1rem;max-width: 60%;')
+              // $('#form_error').append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin:.3rem;padding: 1rem;max-width: 60%;">Campaign name already exists. Please enter another name for campaign.<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin:0;padding: 0"><span aria-hidden "true">&times;</span></button></div>');
                console.log("some error");
             }
         });

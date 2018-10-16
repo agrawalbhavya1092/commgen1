@@ -23,6 +23,8 @@ from mailing_templates.models import Template,TemplateBody
 from django.http import HttpResponse
 from multiprocessing import Pool
 
+from django.utils.safestring import mark_safe
+import json
 
 class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
     template_name = 'index.html'
@@ -69,8 +71,10 @@ class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
 
 class DeliveryView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/overview.html"
-    # def get(self,request,*args,**kwargs):
-        # return render(request,self.template_name,{})
+    def get(self,request,*args,**kwargs):
+        subject = Campaign.objects.get(slug = kwargs['slug']).subject
+        return render(request,self.template_name,{'subject':subject})
+
     def post(self,request,*args,**kwargs):
         print("request.......... ",dir(request.content_type))
         my_timestamp = datetime.datetime.now() # some timestamp
@@ -107,6 +111,30 @@ class AudienceView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
         return render(request,self.template_name,{'campaign':campaign_name,'sources':source,'form':form,'generic_company':generic_company,'staff_status':STAFF_STATUS,'manager':MANAGER,'regular':REGULAR,'language':LANGUAGE,'no_of_email':no_of_email,"email_list":email_list})
 
 
+class OverView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+    template_name = "myapp/overview.html"
+    def get(self,request,*args,**kwargs):
+        campaign_name = kwargs['slug']
+        subject = Campaign.objects.get(slug = campaign_name).subject
+        return render(request,self.template_name,{'subject':subject,'campaign_name':campaign_name})
+
+    def post(self,request,*args,**kwargs):
+        campaign_name = kwargs["slug"]
+        camp_obj = Campaign.objects.filter(slug=campaign_name)
+        camp = camp_obj.first()
+        data = request.POST
+        start = datetime.datetime.now()
+        end = start
+        if camp.event is not None:
+            print("inside if")
+            Event.objects.filter(pk=camp.event_id).update(start=start,end=end)
+        else:
+            print("inside else")
+            e = Event(start=start,end = end,title=camp.name,creator=request.user,calendar = Calendar.objects.filter().first())
+            e.save()
+            camp_obj.update(event=e)
+        return render(request,self.template_name,{'campaign':campaign_name})
+
 class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/editor.html"
     def get(self,request,*args,**kwargs):
@@ -127,23 +155,23 @@ class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,Templa
         else:
             source = "Christmas"
             return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
-        campaign = request.POST.get('campaign_body').replace(' ','')
-        campaign_body = request.POST.get('campaign_body')
-        if 'src="/media' in campaign or "src='/media" in campaign:
-            replace1 = '"'+PROJECT_URL + '/media'
-            replace2 = "'"+PROJECT_URL + "/media"
-            campaign_body = campaign_body.replace('"/media',replace1).replace("'/media",replace2)
-        reciever_list = [request.user.email]
-        subject = instance.subject
+        # campaign = request.POST.get('campaign_body').replace(' ','')
+        # campaign_body = request.POST.get('campaign_body')
+        # if 'src="/media' in campaign or "src='/media" in campaign:
+        #     replace1 = '"'+PROJECT_URL + '/media'
+        #     replace2 = "'"+PROJECT_URL + "/media"
+        #     campaign_body = campaign_body.replace('"/media',replace1).replace("'/media",replace2)
+        # reciever_list = [request.user.email]
+        # subject = instance.subject
 
-        send_email(
-            'Greetings from Commgen',
-            '',
-            'Commgen',[request.user.email],
-            fail_silently=False,
-            html_message = campaign_body
-            )
-        return redirect('audience',slug=campaign_name)
+        # send_email(
+        #     'Greetings from Commgen',
+        #     '',
+        #     'Commgen',[request.user.email],
+        #     fail_silently=False,
+        #     html_message = campaign_body
+        #     )
+        return redirect('overview',slug=campaign_name)
 
 class SaveDraftEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/editor.html"
@@ -191,11 +219,24 @@ class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,ListView):
         template_id = request.POST.get('template_id')
         campaign = kwargs.get('slug','')
         camp = Campaign.objects.filter(slug=campaign)
-        if template_id == 'blank_template':
-            camp.update(draft_stage=2,template=None,campaign_body='')
+        queryset = camp.first()
+        print("saved template_id...",queryset.template_id)
+        print("new template_id...",template_id)
+        if queryset.template is not None and template_id != 'blank_template' and queryset.template_id == int(template_id):
+            print("if.................")
+            pass
+        elif queryset.template is not None and template_id == 'blank_template' and queryset.template_id == 3:
+            print("elif.................")
+            pass
         else:
-            template_body = TemplateBody.objects.get(template_id=template_id)
-            camp.update(template_id = template_id,campaign_body=template_body.body,draft_stage=2)
+            if template_id == 'blank_template':
+                print("11111111111111111111111111")
+                temp = Template.objects.filter(pk = 3).first()
+                camp.update(draft_stage=2,template=temp,campaign_body='')
+            else:
+                print("11111111111111111111111112222222222222222221")
+                template_body = TemplateBody.objects.get(template_id=template_id)
+                camp.update(template_id = template_id,campaign_body=template_body.body,draft_stage=2)
         return redirect('editor',slug=kwargs['slug'])
 
 

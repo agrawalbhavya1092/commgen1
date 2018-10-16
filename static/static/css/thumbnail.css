@@ -32,3 +32,13 @@
   margin: 1rem;
   border: 2px solid #000;
 }
+
+.thumbnail-container:hover,
+.thumbnail:hover,
+.thumbnail-container:focus,
+.thumbnail:focus {
+  cursor: hand;
+  cursor: pointer;
+  opacity: .9;
+  border-color: 2px solid #f16e00;
+}

@@ -2,10 +2,13 @@
 {% load scheduletags i18n %}
 
 {% block body %}
+<div class="container theme-showcase" role="main" style="font-family: arial;margin-top: 1rem">
 
 {% include "schedule/_dialogs.html" %}
-<div class="row row-centered">
-  <a class="btn btn-primary gradient" href="{% url "week_calendar" calendar.slug %}{% querystring_for_date period.start 3 %}" style="margin-left: 1rem">
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+
+  <a class="btn btn-primary gradient" href="{% url "week_calendar" calendar.slug %}{% querystring_for_date period.start 3 %}">
     {% trans "Week" %}
   </a>
   <a class="btn btn-primary gradient" href="{% url "month_calendar" calendar.slug %}{% querystring_for_date period.start 2 %}" style="margin-left: 1rem">
@@ -15,30 +18,31 @@
     {% trans "Year" %}
   </a>
 </div>
+</div>
 
 
 <div class="row">
     <!-- <h1>{{ calendar.name }}</h1> -->
-    <div class="col-md-4">
-    <h1>Calendar</h1>
+    <div class="col-md-4 offset-md-4" style="margin-top: .5rem">
+    <h1  style="margin-left: 4rem">Calendar</h1>
   </div>
     <div class="col-md-8 offset-md-3">
     {% prevnext "day_calendar" calendar period "l, F d, Y" %}
   </div>
   </div>
   <div class="row">
-    <div class="col-md-6 offset-md-5"
-    <div class="now">
+    <div class="col-md-2 offset-md-5" style="margin-bottom: 1rem;margin-top: .5rem">
+    <!-- <div class="now"> -->
       <a class="btn btn-primary" href="{% url "day_calendar" calendar.slug %}">
         {% trans "Today" %}
       </a>
     </div>
   </div>
-</div>
-  <div class="row row-centered">
-    <div>
+  <div class="row">
+    <div class="col-md-12">
       {% daily_table period %}
     </div>
+</div>
 </div>
 
 {% endblock %}
