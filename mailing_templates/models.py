@@ -5,6 +5,7 @@ class Template(models.Model):
 	TEMPLATE_TYPES = (('Public','Public'),('Shared','Shared'))
 	STATUS = (('Active','Active'),('Inactive','Inactive'))
 	id = models.AutoField(primary_key = True,db_column = 'CG_MT_ID')
+	slug = models.SlugField(max_length=140, unique=True,db_column='CG_MT_SLUG',null = True)
 	name = models.CharField(max_length = 255,db_column = 'CG_MT_NAME')
 	description = models.TextField(null = True,db_column = 'CG_MT_DESC')
 	creation_date = models.DateField(db_column = 'CG_MT_CREATION_DATE')
@@ -12,7 +13,7 @@ class Template(models.Model):
 	modification_date = models.DateField(db_column = 'CG_MT_MODIFICATION_DATE',null = True)
 	modifier = models.ForeignKey('users.User',on_delete = models.CASCADE,db_column = 'CG_MT_MODIFIER_ID',null = True,related_name = 'template_modifier')
 	type_of_template = models.CharField(max_length = 20,choices = TEMPLATE_TYPES,db_column = 'CG_MT_TYPE')
-	status = models.CharField(max_length = 20,choices = STATUS,db_column = 'CG_MT_STATUS')	
+	status = models.CharField(max_length = 20,choices = STATUS,db_column = 'CG_MT_STATUS')
 
 	def __str__(self):
 		return self.name
@@ -22,7 +23,8 @@ class Template(models.Model):
 
 class TemplateBody(models.Model):
 	template = models.OneToOneField('Template',db_column = 'CG_MT_ID', on_delete = models.CASCADE)
-	body = models.TextField(db_column = 'CG_MT_BODY')
+	body = models.TextField(db_column = 'CG_MT_BODY',null = True,blank=True)
+	body_file = models.CharField(max_length=100,null=True,db_column = 'CG_MT_FILE')
 
 	def __str__(self):
 		return self.template.name
@@ -35,3 +37,5 @@ class TemplateUsers(models.Model):
 	template = models.ForeignKey('Template',db_column = 'CG_MT_ID',on_delete = models.CASCADE)
 	user = models.ForeignKey('users.User',db_column = 'CG_MT_USER_ID',on_delete = models.CASCADE)
 	type_of_template = models.CharField(max_length = 20,choices = TEMPLATE_TYPES,db_column = 'CG_MT_TYPE')
+
+

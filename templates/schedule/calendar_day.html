@@ -8,13 +8,16 @@
 <div class="row">
     <div class="col-md-4 offset-md-4">
 
-  <a class="btn btn-primary gradient" href="{% url "week_calendar" calendar.slug %}{% querystring_for_date period.start 3 %}">
+  <a class="btn btn-primary" href="">
+  <!-- <a class="btn btn-primary gradient" href="{% url "week_calendar" calendar.slug %}{% querystring_for_date period.start 3 %}"> -->
     {% trans "Week" %}
   </a>
-  <a class="btn btn-primary gradient" href="{% url "month_calendar" calendar.slug %}{% querystring_for_date period.start 2 %}" style="margin-left: 1rem">
+  <a class="btn btn-primary gradient" href="" style="margin-left: 1rem">
+  <!-- <a class="btn btn-primary gradient" href="{% url "month_calendar" calendar.slug %}{% querystring_for_date period.start 2 %}" style="margin-left: 1rem"> -->
     {% trans "Month" %}
   </a>
-  <a class="btn btn-primary gradient" href="{% url "year_calendar" calendar.slug %}{% querystring_for_date period.start 1 %}" style="margin-left: 1rem">
+  <a class="btn btn-primary gradient" href="" style="margin-left: 1rem">
+  <!-- <a class="btn btn-primary gradient" href="{% url "year_calendar" calendar.slug %}{% querystring_for_date period.start 1 %}" style="margin-left: 1rem"> -->
     {% trans "Year" %}
   </a>
 </div>
@@ -38,11 +41,11 @@
       </a>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12">
+  <!-- <div class="row"> -->
+    <!-- <div class="col-md-12"> -->
       {% daily_table period %}
-    </div>
-</div>
+    <!-- </div> -->
+<!-- </div> -->
 </div>
 
 {% endblock %}

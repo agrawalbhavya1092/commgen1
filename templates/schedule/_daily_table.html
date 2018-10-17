@@ -2,20 +2,22 @@
 <table class="table table-striped">
     {% for slot in slots %}
     <tr>
-    <td class="col-md-1">
+    <td>
       <span class="time">{{ slot.start|time:"G:i" }}</span>
-      {% if addable %}
-      {% create_event_url calendar slot.start %}
-      {% endif %}
     </td>
-    <td class="col-md-4">
+    <td>
+      <div class="row">
+        
       {% for occ in slot.occurrences %}
-      <button type="button"  class="btn {% if occ.cancelled %} btn-danger {%else%} btn-primary {% endif %}" data-toggle="modal" data-target="#{% hash_occurrence occ %}" {% if occ.event.color_event %} style="background-color: {{occ.event.color_event}};border-color:{{occ.event.color_event}};margin-top: 10px" {% else %} style="margin-top: 1px;" {% endif %}>
-                  {% options occ %}
+      <div class="col-md-2">
+        <!-- <a href="{% url 'overview' occ.event.campaign.slug %}" class="btn btn-primary">sds</a> -->
+      <a href="{% if occ.event.campaign.creator == request.user %}{% url 'overview' occ.event.campaign.slug %}{% endif %}" class="btn {% if occ.cancelled %} btn-danger {%else%} btn-primary {% endif %}">
                   {% title occ %}
-            </button>
-      {% include 'schedule/_detail.html' with occurrence=occ %}
+            </a>
+      </div>  
       {% endfor %}
+      </div>
+
     </td>
   </tr>
     {% endfor %}

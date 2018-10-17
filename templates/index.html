@@ -29,13 +29,17 @@
     <tr>
       <td>{{campaign.name}}</td>
       <td>{{campaign.status}}</td>
-      <td style="text-align: right"><a {% if campaign.draft_stage == 1 %} href="{% url 'updatecampaign' campaign.slug %}" {% elif campaign.draft_stage == 2 %} href="{% url 'template' campaign.slug %}" {% elif campaign.draft_stage == 3 %} href="{% url 'editor' campaign.slug %}" {% endif %}><i class="icon-Pencil"></i></a><i class="icon-trash"></i></td>
+      <td style="text-align: right">
+        <a style="text-decoration: none;" {% if campaign.draft_stage == 1 %} href="{% url 'updatecampaign' campaign.slug %}" {% elif campaign.draft_stage == 2 %} href="{% url 'template' campaign.slug %}" {% elif campaign.draft_stage == 3 %} href="{% url 'editor' campaign.slug %}" {% endif %}><i class="icon-Pencil" data-toggle="tooltip" data-placement="top" title="{% trans 'Edit' %}"></i></a>
+        <i class="icon-trash" data-toggle="tooltip" data-placement="top" title="{% trans 'Delete' %}"></i>
+      </td>
     </tr>
     {% endfor %}
     <tr>
       <td>Campaign for New Year</td>
       <td>Pending Approval</td>
-      <td style="text-align: right"><i class="icon-tick"></i><i class="icon-delete"></i></td>
+      <td style="text-align: right"><i class="icon-tick" data-toggle="tooltip" data-placement="top" title="{% trans 'Approve' %}"></i>
+        <i class="icon-delete" data-toggle="tooltip" data-placement="top" title="{% trans 'Reject' %}"></i></td>
     </tr>
   </tbody>
 </table>

@@ -177,7 +177,7 @@ a {
 
 a:hover {
   color: #f16e00;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 p a {

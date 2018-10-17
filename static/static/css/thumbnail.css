@@ -1,6 +1,6 @@
 .thumbnail iframe {
-  width: 1440px;
-  height: 900px;
+  width: 980px;
+  height: 800px;
 }
 
 .thumbnail {
@@ -24,8 +24,8 @@
   bottom: 0;
 }
 .thumbnail-container {
-  width: calc(1440px * 0.19);
-  height: calc(900px * 0.19);
+  width: calc(1440px * 0.25);
+  height: calc(900px * 0.25);
   display: inline-block;
   overflow: hidden;
   position: relative;
@@ -33,7 +33,7 @@
   border: 2px solid #000;
 }
 
-.thumbnail-container:hover,
+/*.thumbnail-container:hover,
 .thumbnail:hover,
 .thumbnail-container:focus,
 .thumbnail:focus {
@@ -41,4 +41,4 @@
   cursor: pointer;
   opacity: .9;
   border-color: 2px solid #f16e00;
-}
+}*/

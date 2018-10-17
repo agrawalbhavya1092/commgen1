@@ -5,17 +5,17 @@ from django.db import models
 # Create your models here.
 
 class MailingList(models.Model):
-	LIST_TYPES = (('Public','Public'),('Shared','Shared'))
+	LIST_TYPES = (('Public','Public'),('Private','Private'))
 	STATUS = (('Active','Active'),('Inactive','Inactive'))
-	id = models.AutoField(primary_key = True,db_column = 'CG_ML_ID')
+	id = models.CharField(primary_key = True,max_length=50,db_column = 'CG_ML_ID')
 	name = models.CharField(max_length = 255,db_column = 'CG_ML_NAME')
 	description = models.TextField(null = True,db_column = 'CG_ML_DESC')
-	creation_date = models.DateField(db_column = 'CG_ML_CREATION_DATE')
+	creation_date = models.DateTimeField(db_column = 'CG_ML_CREATION_DATE')
 	creator = models.ForeignKey('users.User',on_delete = models.CASCADE,db_column = 'CG_ML_CREATOR_ID',null = True,related_name = 'mailing_list_creator')
-	modification_date = models.DateField(db_column = 'CG_ML_MODIFICATION_DATE',null = True)
+	modification_date = models.DateTimeField(db_column = 'CG_ML_MODIFICATION_DATE',null = True)
 	modifier = models.ForeignKey('users.User',on_delete = models.CASCADE,db_column = 'CG_ML_MODIFIER_ID',null = True, related_name = 'mailing_list_modifier')
 	type_of_list = models.CharField(max_length = 20,choices = LIST_TYPES,db_column = 'CG_ML_TYPE')
-	status = models.CharField(max_length = 20,choices = STATUS,db_column = 'CG_ML_STATUS')
+	status = models.CharField(max_length = 20,choices = STATUS,db_column = 'CG_ML_STATUS',default=STATUS[0][1])
 
 	class Meta:
 		db_table = 'CM_Mailing_list_tbl'
@@ -48,6 +48,16 @@ class MailingListSetup(models.Model):
 
 	class Meta:
 		db_table = 'CM_Mail_list__Setup_tbl'
+
+class MailingListSetupTemporary(models.Model):
+    list_name = models.CharField(max_length = 255,db_column = 'CG_ML_NAME')
+    first_name = models.CharField(max_length = 255,db_column = 'CG_CREATOR_FIRST_NAME')
+    last_name = models.CharField(max_length = 255,db_column = 'CG_CREATOR_LAST_NAME')
+    email = models.CharField(max_length = 255,db_column = 'CG_CREATOR_EMAIL')
+    user_cuid = models.CharField(max_length = 10,db_column = 'CG_CREATOR_CUID')
+    class Meta:
+        db_table = 'CM_Mailing_list_tbl_tmp'
+
 
 # class DepartmentSetup(models.Model):
 # 	source = models.CharField(max_length = 10,db_column = 'CM_STP_SOURCE')

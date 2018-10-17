@@ -25,6 +25,7 @@ from multiprocessing import Pool
 
 from django.utils.safestring import mark_safe
 import json
+from mailing_list.models import MailingList
 
 class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
     template_name = 'index.html'
@@ -69,24 +70,39 @@ class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
             context = {}
         return context
 
-class DeliveryView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
-    template_name = "myapp/overview.html"
-    def get(self,request,*args,**kwargs):
-        subject = Campaign.objects.get(slug = kwargs['slug']).subject
-        return render(request,self.template_name,{'subject':subject})
+# class DeliveryView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+#     template_name = "myapp/overview.html"
+#     def get(self,request,*args,**kwargs):
+#         subject = Campaign.objects.get(slug = kwargs['slug']).subject
+#         return render(request,self.template_name,{'subject':subject})
 
-    def post(self,request,*args,**kwargs):
-        print("request.......... ",dir(request.content_type))
-        my_timestamp = datetime.datetime.now() # some timestamp
-        print("timestamp now....",my_timestamp)
-        old_timezone = pytz.timezone('Asia/Kolkata')
-        print("old_timezone....",old_timezone)
-        new_timezone = pytz.timezone("UTC")
+#     def post(self,request,*args,**kwargs):
+#         print("request.......... ",dir(request.content_type))
+#         my_timestamp = datetime.datetime.now() # some timestamp
+#         print("timestamp now....",my_timestamp)
+#         old_timezone = pytz.timezone('Asia/Kolkata')
+#         print("old_timezone....",old_timezone)
+#         new_timezone = pytz.timezone("UTC")
 
-        # returns datetime in the new timezone
-        my_timestamp_in_new_timezone = old_timezone.localize(my_timestamp).astimezone(new_timezone)
-        print("my_timestamp_in_new_timezone",my_timestamp_in_new_timezone)
-        return "fsf"
+#         # returns datetime in the new timezone
+#         my_timestamp_in_new_timezone = old_timezone.localize(my_timestamp).astimezone(new_timezone)
+#         print("my_timestamp_in_new_timezone",my_timestamp_in_new_timezone)
+#         return "fsf"
+
+class DeliveryView(LoginRequiredMixin,CampaignAuthorizeMixin,ListView):
+    template_name = "myapp/delivery.html"
+    model = MailingList
+    # paginate_by = 100  # if pagination is desired
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['now'] = timezone.now()
+        return context
+    # def get(self,request,*args,**kwargs):
+        # subject = Campaign.objects.get(slug = kwargs['slug']).subject
+        # return render(request,self.template_name,{'subject':subject})
+
+    # def post(self,request,*args,**kwargs):
 
 
 class AudienceView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
@@ -153,37 +169,37 @@ class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,Templa
             form.instance.draft_stage = 3
             form.save()
         else:
-            source = "Christmas"
-            return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
-        # campaign = request.POST.get('campaign_body').replace(' ','')
-        # campaign_body = request.POST.get('campaign_body')
-        # if 'src="/media' in campaign or "src='/media" in campaign:
-        #     replace1 = '"'+PROJECT_URL + '/media'
-        #     replace2 = "'"+PROJECT_URL + "/media"
-        #     campaign_body = campaign_body.replace('"/media',replace1).replace("'/media",replace2)
-        # reciever_list = [request.user.email]
-        # subject = instance.subject
+            return render(request,'myapp/editor.html',{'campaign':campaign_name,'form':form})
+        campaign = request.POST.get('campaign_body').replace(' ','')
+        campaign_body = request.POST.get('campaign_body')
+        if 'src="/media' in campaign or "src='/media" in campaign:
+            replace1 = '"'+PROJECT_URL + '/media'
+            replace2 = "'"+PROJECT_URL + "/media"
+            campaign_body = campaign_body.replace('"/media',replace1).replace("'/media",replace2)
+        reciever_list = [request.user.email]
+        subject = instance.subject
 
-        # send_email(
+        # send_mail(
         #     'Greetings from Commgen',
         #     '',
         #     'Commgen',[request.user.email],
         #     fail_silently=False,
         #     html_message = campaign_body
         #     )
-        return redirect('overview',slug=campaign_name)
+        return redirect('delivery',slug=campaign_name)
 
 class SaveDraftEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/editor.html"
     def post(self,request,*args,**kwargs):
         campaign_name = kwargs["slug"]
-        form = EditorForm(request.POST,instance=Campaign.objects.get(slug=campaign_name))
+        instance = Campaign.objects.get(slug=campaign_name)
+        form = EditorForm(request.POST,instance=instance)
         if form.is_valid():
             form.instance.draft_stage = 3
             form.save()
         else:
-            source = "Christmas"
-            return render(request,'myapp/editor.html',{'campaign':campaign_name,'sources':source,'form':form})
+            # source = "Christmas"
+            return render(request,'myapp/editor.html',{'campaign':campaign_name,'form':form})
         return redirect('home')
 
 class AutoSaveDraftEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
@@ -204,16 +220,27 @@ class AutoSaveDraftEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,Template
         cmap = Campaign.objects.filter(slug=campaign_name).update(campaign_body=campaign_body,draft_stage=3)
         return redirect('home')
 
-class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,ListView):
+class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/template.html"
     model = Template
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['alert'] = _('Select the template.')
+    def get(self,request,*args, **kwargs):
+        context = {}
         campaign = self.kwargs['slug']
-        camp = Campaign.objects.get(slug=campaign)
-        context['my_template'] = camp
-        return context
+        my_template = Campaign.objects.get(slug=campaign).template
+        templates = Template.objects.all().order_by('name')
+        template_list = []
+        for t in templates:
+            if t.slug != 'blank_template':
+                t_dict = {}
+                t_dict['id'] = t.pk
+                t_dict['name'] = t.name
+                f = open(t.templatebody.body_file,'r')
+                t_dict['body'] = f.read()
+                template_list.append(t_dict)
+        context = {'object_list':template_list,'my_template':my_template}
+        return render(request,self.template_name,context)
+
+        # return context
 
     def post(self,request,*args,**kwargs):
         template_id = request.POST.get('template_id')
@@ -223,20 +250,20 @@ class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,ListView):
         print("saved template_id...",queryset.template_id)
         print("new template_id...",template_id)
         if queryset.template is not None and template_id != 'blank_template' and queryset.template_id == int(template_id):
-            print("if.................")
             pass
-        elif queryset.template is not None and template_id == 'blank_template' and queryset.template_id == 3:
-            print("elif.................")
+        elif queryset.template is not None and template_id == 'blank_template' and queryset.template_id == 2:
             pass
         else:
             if template_id == 'blank_template':
-                print("11111111111111111111111111")
-                temp = Template.objects.filter(pk = 3).first()
+                # print("11111111111111111111111111")
+                temp = Template.objects.filter(pk = 2).first()
                 camp.update(draft_stage=2,template=temp,campaign_body='')
             else:
-                print("11111111111111111111111112222222222222222221")
+                # print("11111111111111111111111112222222222222222221")
                 template_body = TemplateBody.objects.get(template_id=template_id)
-                camp.update(template_id = template_id,campaign_body=template_body.body,draft_stage=2)
+                f = open(template_body.body_file,'r')
+
+                camp.update(template_id = template_id,campaign_body=f.read(),draft_stage=2)
         return redirect('editor',slug=kwargs['slug'])
 
 
@@ -298,13 +325,18 @@ class CampaignUpdate(LoginRequiredMixin,CampaignAuthorizeMixin,UpdateView):
 def set_template(request):
     data = request.GET
     template_id = data['data[id]']
+    print("template_id.............",template_id)
     campaign = data['data[campaign]']
     camp = Campaign.objects.filter(slug=campaign)
     if template_id == 'blank_template':
-        camp.update(draft_stage=2,template=None,campaign_body='')
-        return HttpResponse('ok')
+        print(":blank_template",template_id)
+        template_id = 2
+    # else:
+        # template_id = int(template_id)
+        # camp.update(draft_stage=2,template=None,campaign_body='')
+        # return HttpResponse('ok')
 
-    template_body = TemplateBody.objects.get(template_id=template_id)
+    template_body = TemplateBody.objects.filter(template_id=template_id).first()
     camp.update(template_id = template_id,campaign_body=template_body.body,draft_stage=2)
     return HttpResponse('ok')
 
@@ -362,7 +394,7 @@ def load_location(request):
 
  
 class SearchMailingList(TemplateView):
+    template_name = 'myapp/_mailing_list.html'
     def post(self,request,*args,**kwargs):
-        campaign = request.POST.get('campaign')
         mailing_list = "bhavya1992@orange.com;divyani.dubey@orange.com"
-        return render(request,'myapp/audience.html',{'campaign':campaign,'mailing_list':mailing_list,'entity':['OBS']})
+        return render(request,self.template_name,{'mailing_list':mailing_list})

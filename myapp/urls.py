@@ -21,7 +21,7 @@ from django.conf.urls import url
 from django.conf.urls import include
 urlpatterns = [
     path('newcampaign/', NewCampaignCreate.as_view(),name='newcampaign'),
-    path('search-mailing-list/', SearchMailingList.as_view(),name='search_mailing_list'),
+    path('ajax/search-mailing-list/', SearchMailingList.as_view(),name='search_mailing_list'),
     path('ajax/p1/', load_p1,name='load_p1'),
     path('ajax/p1_inner/', load_p1_inner,name='load_p1_inner'),
     path('ajax/p2/', load_p2,name='load_p2'),
@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^ajax/autodraft/(?P<slug>[-\w]+)/$', AutoSaveDraftEditorView.as_view(), name='autodraft'),
     url(r'^template/(?P<slug>[-\w]+)/$', SelectTemplateView.as_view(), name='template'),
     url(r'^overview/(?P<slug>[-\w]+)/$', OverView.as_view(), name='overview'),
+    url(r'^delivery/(?P<slug>[-\w]+)/$', DeliveryView.as_view(), name='delivery'),
 ]
 # urlpatterns += i18n_patterns(path('',include('myapp.urls')))
 # urlpatterns += i18n_patterns(path('home/', home))
