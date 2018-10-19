@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+<div class="container theme-showcase" role="main" style="font-family: arial;">
+
+
+<div class="row" style="margin-top: 9rem">
+
+<div class="card" style="border: 2px solid #000;padding: 3rem;margin-left: 15rem">
+  <div class="card-body">
+    {% if is_scheduled %}
+    The campaign has been scheduled successfully.
+    {% else %}
+    The email has been sent to "<b style="color: #f16e00">{{request.user.email}}</b>"
+    {% endif %}
+  </div>
+</div>
+
+</div>
+<div class="row" style="margin-top: 6rem">
+        <a href="{% url 'home' %}" class="btn btn-primary" style="margin-left: 85%;">{% trans 'GO TO HOME' %}</a>  
+</div>
+
+</div>
+{% endblock  %}

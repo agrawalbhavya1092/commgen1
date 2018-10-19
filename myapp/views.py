@@ -25,7 +25,7 @@ from multiprocessing import Pool
 
 from django.utils.safestring import mark_safe
 import json
-from mailing_list.models import MailingList
+from mailing_list.models import MailingList,MailingListSetupTemporary
 
 class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
     template_name = 'index.html'
@@ -33,8 +33,8 @@ class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
         try:
             # timezone.activate(tz)
             # datetime = timezone.now()
-            print("ddd...........",timezone.now())
-            print("itime now....",datetime.datetime.now())
+            # print("ddd...........",timezone.now())
+            # print("itime now....",datetime.datetime.now())
             context = super(MyView, self).get_context_data(**kwargs)
             calendar = self.object
             period_class = self.kwargs['period']
@@ -54,7 +54,7 @@ class MyView(LoginRequiredMixin,CalendarMixin, DetailView):
             local_timezone = timezone.get_current_timezone()
             period = period_class(event_list, date, tzinfo=local_timezone)
             my_period = period_class(my_event_list, date, tzinfo=local_timezone)
-            campaigns = Campaign.objects.filter(creator=self.request.user)
+            campaigns = Campaign.objects.filter(creator=self.request.user,)
             # campaigns = Campaign.objects.filter(creator=self.request.user,status='Draft')
 
             context.update({
@@ -131,25 +131,70 @@ class OverView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/overview.html"
     def get(self,request,*args,**kwargs):
         campaign_name = kwargs['slug']
-        subject = Campaign.objects.get(slug = campaign_name).subject
-        return render(request,self.template_name,{'subject':subject,'campaign_name':campaign_name})
+        camp = Campaign.objects.get(slug = campaign_name)
+        return render(request,self.template_name,{'campaign':camp})
 
     def post(self,request,*args,**kwargs):
         campaign_name = kwargs["slug"]
         camp_obj = Campaign.objects.filter(slug=campaign_name)
-        camp = camp_obj.first()
+        camp = Campaign.objects.filter(slug=campaign_name).first()
         data = request.POST
-        start = datetime.datetime.now()
-        end = start
-        if camp.event is not None:
-            print("inside if")
-            Event.objects.filter(pk=camp.event_id).update(start=start,end=end)
-        else:
-            print("inside else")
+        if camp.event is None:
+            campaign_body = camp.campaign_body
+            if 'src="/media' in campaign_body or "src='/media" in campaign_body:
+                replace1 = '"'+PROJECT_URL + '/media'
+                replace2 = "'"+PROJECT_URL + "/media"
+                campaign_body = campaign_body.replace('"/media',replace1).replace("'/media",replace2)
+            reciever_list = [request.user.email]
+            subject = camp.subject
+            send_mail(
+                subject,
+                '',
+                'Commgen',reciever_list,
+                fail_silently=True,
+                html_message = campaign_body
+                )
+            start = datetime.datetime.now()
+            end = start
             e = Event(start=start,end = end,title=camp.name,creator=request.user,calendar = Calendar.objects.filter().first())
             e.save()
             camp_obj.update(event=e)
-        return render(request,self.template_name,{'campaign':campaign_name})
+        camp_obj.update(draft_stage=7,status='Sent')
+        return redirect('campaignsent',slug=campaign_name)
+
+def create_campaign_event(camp_obj,camp,start,creator):
+    end = start + datetime.timedelta(minutes=1)
+    if camp.event is not None:
+        e = Event.objects.filter(pk=camp.event_id).update(start=start,end=end)
+    else:
+        e = Event(start=start,end = end,title=camp.name,creator=creator,calendar = Calendar.objects.filter().first())
+        e.save()
+        camp_obj.update(event=e)
+    camp_obj.update(draft_stage=7,status='Sent',is_scheduled=True)
+
+class CampaignSentView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+    template_name = 'myapp/campaign_sent.html'
+    def get(self,request,*args,**kwargs):
+        campaign_id = kwargs['slug']
+        is_scheduled = Campaign.objects.get(slug=campaign_id).is_scheduled
+        return render(request,self.template_name,{'is_scheduled':is_scheduled})
+
+class ScheduleCampaignView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
+    template_name = "myapp/overview.html"
+
+    def post(self,request,*args,**kwargs):
+        campaign_name = kwargs["slug"]
+        camp_obj = Campaign.objects.filter(slug=campaign_name)
+        camp_obj.update(draft_stage=6)
+        camp = Campaign.objects.filter(slug=campaign_name).first()
+        data = request.POST
+        start = data['schedule_date']+ ' '+ data['schedule_time'] +':00'
+        start = datetime.datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
+        creator = request.user
+        create_campaign_event(camp_obj,camp,start,creator)
+        return redirect('campaignsent',slug=campaign_name)
+
+
 
 class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
     template_name = "myapp/editor.html"
@@ -165,27 +210,13 @@ class MailingTemplateEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,Templa
         instance = Campaign.objects.get(slug=campaign_name)
         form = EditorForm(request.POST,instance=instance)
         if form.is_valid():
-            form.instance.status = 'Sent'
             form.instance.draft_stage = 3
             form.save()
         else:
             return render(request,'myapp/editor.html',{'campaign':campaign_name,'form':form})
-        campaign = request.POST.get('campaign_body').replace(' ','')
-        campaign_body = request.POST.get('campaign_body')
-        if 'src="/media' in campaign or "src='/media" in campaign:
-            replace1 = '"'+PROJECT_URL + '/media'
-            replace2 = "'"+PROJECT_URL + "/media"
-            campaign_body = campaign_body.replace('"/media',replace1).replace("'/media",replace2)
-        reciever_list = [request.user.email]
-        subject = instance.subject
 
-        # send_mail(
-        #     'Greetings from Commgen',
-        #     '',
-        #     'Commgen',[request.user.email],
-        #     fail_silently=False,
-        #     html_message = campaign_body
-        #     )
+
+
         return redirect('delivery',slug=campaign_name)
 
 class SaveDraftEditorView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView):
@@ -255,11 +286,9 @@ class SelectTemplateView(LoginRequiredMixin,CampaignAuthorizeMixin,TemplateView)
             pass
         else:
             if template_id == 'blank_template':
-                # print("11111111111111111111111111")
                 temp = Template.objects.filter(pk = 2).first()
                 camp.update(draft_stage=2,template=temp,campaign_body='')
             else:
-                # print("11111111111111111111111112222222222222222221")
                 template_body = TemplateBody.objects.get(template_id=template_id)
                 f = open(template_body.body_file,'r')
 
@@ -325,7 +354,6 @@ class CampaignUpdate(LoginRequiredMixin,CampaignAuthorizeMixin,UpdateView):
 def set_template(request):
     data = request.GET
     template_id = data['data[id]']
-    print("template_id.............",template_id)
     campaign = data['data[campaign]']
     camp = Campaign.objects.filter(slug=campaign)
     if template_id == 'blank_template':
@@ -395,6 +423,9 @@ def load_location(request):
  
 class SearchMailingList(TemplateView):
     template_name = 'myapp/_mailing_list.html'
-    def post(self,request,*args,**kwargs):
-        mailing_list = "bhavya1992@orange.com;divyani.dubey@orange.com"
-        return render(request,self.template_name,{'mailing_list':mailing_list})
+    def get(self,request,*args,**kwargs):
+        list_name = request.GET['data[id]']
+        mailing_list = MailingListSetupTemporary.objects.filter(list_name=list_name).values('email')
+        people_count = mailing_list.count()
+        print("mailing_list",mailing_list.count())
+        return render(request,self.template_name,{'mailing_list':mailing_list,'people_count':people_count,'list_name':list_name})

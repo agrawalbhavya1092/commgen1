@@ -48,68 +48,155 @@
         </li>
     </ol>
 </nav>
+<form method="post" action="">
+    {% csrf_token %}
 <div class="container" style="margin-top: 2%">
     <div class="row">
-        <div class='col-sm-10'>
+        <div class='col-sm-5'>
             <div class="row">
-                <div class='col-sm-2'>
+                <div class='col-sm-5'>
                     <h6>{% trans 'Subject line' %}</h6>
                 </div>
-                <div class='col-sm-10'>
-                    {{subject}} &nbsp;&nbsp;&nbsp;&nbsp;       <a href="{% url 'updatecampaign' campaign_name %}" style="text-decoration: underline;font-weight: 600">Edit</a>
-            <!-- <p><h6>{% trans 'Sender' %}</h6> {{request.user.get_full_name}}</p> -->
+                <div class='col-sm-7'>
+                    {{campaign.subject}} &nbsp;&nbsp;&nbsp;&nbsp;    {% if campaign.draft_stage != 7 %}   <a href="{% url 'updatecampaign' campaign.slug %}" style="text-decoration: underline;font-weight: 600">Edit</a>{% endif %}
             </div>
         </div>
             <div class="row">
-                <div class='col-sm-2'>
+                <div class='col-sm-5'>
                     <h6>{% trans 'Sender' %}</h6>
                 </div>
-                <div class='col-sm-10'>
+                <div class='col-sm-7'>
             {{request.user.get_full_name}}&nbsp;&nbsp;&nbsp;&nbsp; 
-                  <!-- <a href="" style="text-decoration: underline;font-weight: 600">Edit</a> -->
             </div>
         </div>
-<!--             <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="icon-calendar_month"></span>
-                    </span>
+            <div class="row">
+                <div class='col-sm-5'>
+                    <h6>{% trans 'Campaign Name' %}</h6>
                 </div>
-            </div> -->
+                <div class='col-sm-7'>
+            {{campaign.name}}&nbsp;&nbsp;&nbsp;&nbsp; 
+            </div>
+        </div>
+            <div class="row">
+                <div class='col-sm-5'>
+                    <h6>{% trans 'Creation Date' %}</h6>
+                </div>
+                <div class='col-sm-7'>
+            {{campaign.creation_date}}&nbsp;&nbsp;&nbsp;&nbsp; 
+            </div>
+        </div>
+        {% if campaign.event is not None %}
+            <div class="row">
+                <div class='col-sm-5'>
+                    <h6>{% trans 'Campaign scheduled on' %}</h6>
+                </div>
+                <div class='col-sm-7'>
+            {{campaign.event.start}}&nbsp;&nbsp;&nbsp;&nbsp; 
+            </div>
+        </div>
+        {% endif %}
+        </div>
+        <div class='col-sm-5'>
+          <div class="thumbnail-container" style="width: 25rem;height: 19rem;">
+            <div class="thumbnail-preview">
+             <iframe srcdoc="{{campaign.campaign_body}}" frameborder="0"></iframe>
+            </div>
+          </div>
         </div>
         <div class='col-sm-2'>
-            <button type="button" class="btn btn-secondary">{% trans 'Schedule' %}</button>
+                
+        <!-- Button trigger modal -->
+        {% if campaign.draft_stage != 7 %}
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter" id="id_schedule">
+          <span class="icon-calendar_month" style="font-size: 30px;font-weight: 500;position: absolute;"></span><span style="margin-left: 35%;padding-right: 25px;margin-top: 5px">{% trans 'Schedule' %}</span>
+        </button>
+        {% endif %}
         </div>
         </div>
 </div>
-<!-- <form method="post" action="">
-    {% csrf_token %}
-<div class="row">
-    <input type="date" name="date">
-    <input type="time" name="time">
-</div> -->
 
-<div class="row" style="margin-top: 23%">
-          <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 60%;">{% trans 'Cancel' %}</a>
-        <a href="" id="template_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
-        <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
-        <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% trans 'SEND' %}</button>  
-</div>
-<!-- </form> -->
+<div class="row" style="margin-top: 1%">
+    {% if campaign.draft_stage != 7 %}
+        <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 55%;">{% trans 'Cancel' %}</a>
+        <a href="" id="overview_previous" class="btn btn-secondary" style="margin-left: 1%;">{% trans 'Previous' %}</a>
+        <a href="{% url 'home' %}" class="btn btn-secondary disabled" style="margin-left: 1%;">{% trans 'Save as draft' %}</a>
+        <button type="submit" class="btn btn-primary" style="margin-left: 1%;">{% if campaign.event is None %} {% trans 'SEND' %}{% else %}{% trans 'SCHEDULE' %}{% endif %}</button> 
+        {% else %}
+        <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 85%;">{% trans 'Cancel' %}</a>
+    {% endif %} 
 
 </div>
+</form>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 30rem">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalCenterTitle" style="color: #f16e00">{% trans 'Schedule the delivery' %}</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form method="post" action="" id="schedule_form">
+            {% csrf_token %}
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-md-5">
+            <a href="#" class="btn btn-primary active" role="button" aria-pressed="true">{% trans 'Select the date' %}</a>
+            </div>
+            <div class="col-md-6">
+            <input type="date" class="form-control" id="date" name="schedule_date" required="">
+            </div>
+          </div>
+          <div class="row" style="margin-top: 2rem">
+            <div class="col-md-5">
+            <a href="#" class="btn btn-primary active" role="button" aria-pressed="true">{% trans 'Select the time' %}</a>
+            </div>
+            <div class="col-md-6">
+            <input type="time" class="form-control" id="time" name="schedule_time" required="">
+            </div>
+
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Cancel' %}</button>
+        <button type="submit" class="btn btn-primary">{% trans 'Schedule' %}</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <script type="text/javascript">
-                $(function () {
-                $('#datetimepicker1').datetimepicker();
-            });
     url = window.location.href
     parameter = url.split("/")
     slug = parameter[parameter.length - 2]
     editorcampaign = '/campaign/editor/' + slug
     editor_url = '/campaign/editor/' + slug
-    $('#template_previous').attr('href',editorcampaign)
-    // $('#template_next').attr('href',editor_url)
+    $('#overview_previous').attr('href',editorcampaign)
+    $("#id_schedule").click(function(){
+     schedule_url = '/campaign/schedulecampaign/'+slug +'/';
+        $("#schedule_form").attr('action',schedule_url);
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;     // getMonth() is zero-based
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+           month = '0' + month.toString();
+        if(day < 10)
+           day = '0' + day.toString();
 
+        var maxDate = year + '-' + month + '-' + day;
+        $('#date').attr('min', maxDate);
+
+    })
 </script>
 {% endblock  %}

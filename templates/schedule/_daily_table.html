@@ -9,12 +9,13 @@
       <div class="row">
         
       {% for occ in slot.occurrences %}
+      {% if occ.event.campaign.creator == request.user %}
       <div class="col-md-2">
-        <!-- <a href="{% url 'overview' occ.event.campaign.slug %}" class="btn btn-primary">sds</a> -->
-      <a href="{% if occ.event.campaign.creator == request.user %}{% url 'overview' occ.event.campaign.slug %}{% endif %}" class="btn {% if occ.cancelled %} btn-danger {%else%} btn-primary {% endif %}">
+      <a href="{% url 'overview' occ.event.campaign.slug %}" class="btn {% if occ.cancelled %} btn-danger {%else%} btn-primary {% endif %}">
                   {% title occ %}
             </a>
       </div>  
+      {% endif %}
       {% endfor %}
       </div>
 

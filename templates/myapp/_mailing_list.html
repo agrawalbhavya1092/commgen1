@@ -1,2 +1,5 @@
-<textarea>{{mailing_list}}
+<div>
+	<h5>This campaign will be sent to below <span style="color: #f16e00">{{people_count}}</span> people based on selected list <span style="color: #f16e00">{{list_name}}</span>.</h5>
+<textarea cols="100" rows="7">{% for m in mailing_list %}{{m.email}};{% endfor %}
 </textarea>
+</div>

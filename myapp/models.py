@@ -23,6 +23,7 @@ class Campaign(models.Model):
 	campaign_body = models.TextField(null = True,db_column = 'CG_CAMPAIGN_BODY')
 	event = models.OneToOneField('schedule.event',null = True,max_length=120,db_column = 'CG_CAMPAIGN_REC_ID',on_delete=models.CASCADE)
 	draft_stage = models.IntegerField(default=1,db_column='CG_CAMPAIGN_DRAFT_STATUS')
+	is_scheduled = models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.name

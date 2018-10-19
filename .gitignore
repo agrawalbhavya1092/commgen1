@@ -34,4 +34,3 @@ venv/
 *.prefs
 /.stfolder
 */uploads
-db.sqlite3

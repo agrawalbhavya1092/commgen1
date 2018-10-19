@@ -30,6 +30,14 @@ def get_event_on_tooltip(day):
             return "Multiple Campaigns"
     return event.title+','+str(event.start.strftime('%H:%M'))+' - '+str(event.end.strftime('%H:%M'))
 
+@register.filter(name='is_my_event')
+def is_my_event(day,user=None):
+    for event in day.occurrences:
+        if day.start.date() == event.start.date() and event.event.creator == user:
+            return True
+    return False
+
+
 
 @register.inclusion_tag('schedule/_month_table.html', takes_context=True)
 def month_table(context, calendar, month, size='regular', shift=None):

@@ -41,6 +41,8 @@ urlpatterns = [
     url(r'^template/(?P<slug>[-\w]+)/$', SelectTemplateView.as_view(), name='template'),
     url(r'^overview/(?P<slug>[-\w]+)/$', OverView.as_view(), name='overview'),
     url(r'^delivery/(?P<slug>[-\w]+)/$', DeliveryView.as_view(), name='delivery'),
+    url(r'^schedulecampaign/(?P<slug>[-\w]+)/$', ScheduleCampaignView.as_view(), name='schedulecampaign'),
+    url(r'^campaignsent/(?P<slug>[-\w]+)/$', CampaignSentView.as_view(), name='campaignsent'),
 ]
 # urlpatterns += i18n_patterns(path('',include('myapp.urls')))
 # urlpatterns += i18n_patterns(path('home/', home))
